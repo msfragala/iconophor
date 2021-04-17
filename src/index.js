@@ -1,9 +1,11 @@
-import { listen, Router } from 'worktop';
+import { Router } from 'worktop';
+import * as Cache from 'worktop/cache';
 
 import { catchError } from './lib/catch-error';
 import { generateSvg } from './lib/generate-svg';
 
 const worker = new Router();
+const cachePolicy = 'public,max-age=2592000,s-maxage=31557600';
 
 // https://unpkg.com/browse/feather-icons/
 worker.add(
@@ -15,6 +17,7 @@ worker.add(
     const url = `https://unpkg.com/feather-icons@${version}/dist/icons/${name}.svg`;
     const svg = await generateSvg(url, req.query);
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', cachePolicy);
     res.send(200, svg);
   })
 );
@@ -29,6 +32,7 @@ worker.add(
     const url = `https://unpkg.com/@material-icons/svg@${version}/svg/${name}/${style}.svg`;
     const svg = await generateSvg(url, req.query);
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', cachePolicy);
     res.send(200, svg);
   })
 );
@@ -43,8 +47,9 @@ worker.add(
     const url = `https://unpkg.com/@fortawesome/fontawesome-free@${version}/svgs/${style}/${name}.svg`;
     const svg = await generateSvg(url, req.query);
     res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', cachePolicy);
     res.send(200, svg);
   })
 );
 
-listen(worker.run);
+Cache.listen(worker.run);
