@@ -1,0 +1,94 @@
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": false,
+    "ecmaFeatures": {
+      "globalReturn": false
+    },
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["next/babel"]
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "plugins": ["react-hooks", "simple-import-sort", "path-alias"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "prettier"
+  ],
+  "globals": {
+    "React": true,
+    "process": true
+  },
+  "rules": {
+    "sort-imports": "off",
+    "import/order": "off",
+    "path-alias/no-relative": [
+      "error",
+      {
+        "exceptions": ["*.module.css"]
+      }
+    ],
+    "react/button-has-type": "warn",
+    "react/function-component-definition": "error",
+    "react/jsx-fragments": ["error", "syntax"],
+    "react/jsx-sort-props": "error",
+    "react/jsx-wrap-multilines": "error",
+    "react/no-array-index-key": "warn",
+    "react/no-danger": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/prop-types": "off",
+    "react/jsx-no-target-blank": [
+      "error",
+      {
+        "allowReferrer": true
+      }
+    ],
+    "react/self-closing-comp": [
+      "error",
+      {
+        "component": true,
+        "html": true
+      }
+    ],
+    "no-debugger": "error",
+    "no-else-return": "error",
+    "no-extra-bind": "error",
+    "no-implicit-coercion": "error",
+    "no-unused-vars": "error",
+    "no-var": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": ["lodash", "moment"],
+        "patterns": ["lodash/*"]
+      }
+    ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  },
+  "overrides": [
+    {
+      "files": "./*.js",
+      "env": {
+        "browser": false,
+        "commonjs": true,
+        "node": true
+      }
+    },
+    {
+      "files": "./src/pages/api/**/*.js",
+      "env": {
+        "node": true
+      }
+    }
+  ]
+}
