@@ -21,12 +21,16 @@ const svgAttributes = [
 export async function generateSvg(url, query) {
   const res = await fetch(url);
 
+  if (res.status === 404) {
+    throw new Exception(404, 'Icon not found');
+  }
+
   if (!res.ok) {
-    throw new Exception(res.status, res.statusText);
+    throw new Exception(500, 'Error fetching icon');
   }
 
   if (res.headers.get('content-type') !== 'image/svg+xml') {
-    throw new Exception(500, '');
+    throw new Exception(500, 'Located resource not SVG');
   }
 
   const raw = await res.text();

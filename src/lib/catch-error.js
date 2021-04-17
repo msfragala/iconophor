@@ -4,7 +4,8 @@ export function catchError(fn) {
       await fn(req, res);
     } catch (error) {
       const status = error.status ?? 500;
-      res.send(status, '');
+      const message = error.statusText ?? 'Error processing request';
+      res.send(status, message);
     }
   };
 }
