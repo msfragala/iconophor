@@ -18,8 +18,8 @@ export function Playground() {
   }, [version, params, icon]);
 
   return (
-    <div className="grid gap-24">
-      <div className="flex gap-24">
+    <div className="grid grid-cols-1 gap-24">
+      <div className="flex flex-col md:flex-row gap-24">
         <div>
           <label
             className="block text-sm text-text-soft mb-4"
@@ -28,7 +28,7 @@ export function Playground() {
             Version
           </label>
           <input
-            className="bg-background-soft px-12 py-8 rounded"
+            className="input w-full md:w-auto"
             id="playground-version"
             name="version"
             onChange={(event) => setVersion(event.target.value)}
@@ -43,7 +43,7 @@ export function Playground() {
             Icon name
           </label>
           <input
-            className="bg-background-soft px-12 py-8 rounded"
+            className="input w-full md:w-auto"
             id="playground-icon"
             name="icon"
             onChange={(event) => setIcon(event.target.value)}
@@ -59,15 +59,15 @@ export function Playground() {
           Query string
         </label>
         <input
-          className="bg-background-soft px-12 py-8 rounded w-full"
+          className="input w-full"
           name="playground-params"
           onChange={(event) => setParams(event.target.value.replace('?', ''))}
           value={`?${params}`.replace('??', '?')}
         />
       </div>
-      <div className="space-y-8 pt-24">
+      <div className="space-y-8">
         <p className="text-sm text-text-soft">
-          <code>{src}</code>
+          <code className="break-words">{src}</code>
         </p>
         <div className="border rounded p-24">
           <img alt="" className="h-64 w-64" src={src} />

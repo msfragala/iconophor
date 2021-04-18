@@ -4,12 +4,19 @@ import { svgAttributes } from '@/constants/svg-attributes';
 
 export default function Home() {
   return (
-    <div className="max-w-640 mx-auto grid gap-y-60 my-144">
+    <div className="space-y-60" style={{ borderColor: 'red' }}>
       <section>
         <h1 className="heading-xl text-center">Iconophor</h1>
         <p className="mt-48">
-          Iconophor is an open-source CDN for SVG-based icons that lets you
-          manipulate the fill, stroke, viewbox, etc. via query parameters.
+          Iconophor is an{' '}
+          <a className="link" href="https://github.com/msfragala/iconophor">
+            open-source
+          </a>{' '}
+          CDN for popular SVG icon libraries that enables you to load icons as
+          images while still controlling the fill, stroke, etc. via query
+          parameters. Loading SVG icons as images can be beneficial for
+          performance in some contexts, especially when using{' '}
+          <span className="inline-code">loading=&#34;lazy&#34;</span>.
         </p>
       </section>
       <section>
@@ -20,32 +27,37 @@ export default function Home() {
         <Playground />
       </section>
       <section>
-        <h2 className="heading-lg mb-24">Icon libraries supported</h2>
-        <ul className="grid gap-y-36">
+        <h2 className="heading-lg mb-24">Icon libraries</h2>
+        <ul className="grid grid-cols-1 gap-y-36 w-full">
           {libraries.map((library) => (
             <li key={library.name}>
               <h3 className="mb-4">
-                <a className="heading-md text-pink-300" href={library.homepage}>
+                <a
+                  className="heading-md text-pink-300 hover:underline"
+                  href={library.homepage}
+                >
                   {library.name}
                 </a>
               </h3>
               <p className="mb-8">
                 <a
-                  className="text-sm hover:text-text-soft"
+                  aria-label={`${library.name} on GitHub`}
+                  className="text-sm hover:underline"
                   href={library.github}
                 >
                   GitHub
                 </a>{' '}
                 •{' '}
                 <a
-                  className="text-sm hover:text-text-soft"
+                  aria-label={`${library.name} on Unpkg`}
+                  className="text-sm hover:underline"
                   href={library.unpkg}
                 >
                   Unpkg
                 </a>
               </p>
-              <p className="bg-background-soft px-8 py-4 rounded w-content text-sm">
-                <code>{library.urlPattern}</code>
+              <p className="pill break-words max-w-full overflow-hidden">
+                {library.urlPattern}
               </p>
             </li>
           ))}
@@ -53,7 +65,7 @@ export default function Home() {
       </section>
       <section>
         <h2 className="heading-lg mb-24">Query parameters</h2>
-        <ul className="grid grid-cols-2 gap-y-16">
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
           {svgAttributes.map((name) => (
             <li key={name}>
               <a

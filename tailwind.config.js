@@ -9,6 +9,8 @@ module.exports = {
       lg: '24px',
       xl: '36px',
       xxl: '64px',
+      ...scale({ start: 14, end: 18, step: 2 }),
+      ...scale({ start: 24, end: 96, step: 6 }),
     },
     spacing: {
       ...scale({ start: 0, end: 24, step: 4 }),
@@ -37,6 +39,9 @@ module.exports = {
       DEFAULT: '4px',
     },
     extend: {
+      screens: {
+        xs: '384px',
+      },
       colors: {
         'text': 'var(--colors-text)',
         'text-soft': 'var(--colors-text-soft)',
