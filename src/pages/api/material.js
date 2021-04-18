@@ -1,5 +1,5 @@
-import { catchError } from '../lib/catch-error';
-import { iconHandler } from '../lib/icon-handler';
+import { catchError } from '@/lib/catch-error';
+import { iconHandler } from '@/lib/icon-handler';
 
 // https://unpkg.com/browse/@material-icons/svg/
 export default catchError(

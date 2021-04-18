@@ -1,6 +1,5 @@
 module.exports = {
-  mode: 'jit',
-  purge: ['./**/*.svelte', './**/*.css'],
+  purge: ['./**/*.js'],
   theme: {
     fontSize: {
       em: '1em',
@@ -15,7 +14,11 @@ module.exports = {
       ...scale({ start: 0, end: 24, step: 4 }),
       ...scale({ start: 24, end: 144, step: 12 }),
     },
+    height: {
+      ...scale({ start: 0, end: 64, step: 8 }),
+    },
     width: {
+      ...scale({ start: 0, end: 64, step: 8 }),
       auto: 'auto',
       content: 'fit-content',
       screen: '100vw',

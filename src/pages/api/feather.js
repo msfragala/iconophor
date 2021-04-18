@@ -1,5 +1,5 @@
-import { catchError } from './_lib/catch-error';
-import { iconHandler } from './_lib/icon-handler';
+import { catchError } from '@/lib/catch-error';
+import { iconHandler } from '@/lib/icon-handler';
 
 // https://unpkg.com/browse/feather-icons/
 export default catchError(

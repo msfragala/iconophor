@@ -38,15 +38,10 @@ export function iconHandler({ params, resolveIcon }) {
     const attributes = pullAttributes(req.query);
     const svg = generateSvg(raw, attributes);
 
-    return {
-      status: 200,
-      body: svg,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'image/svg+xml; charset=utf-8',
-        'Cache-Control': CACHE_POLICY,
-      },
-    };
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.setHeader('Cache-Control', CACHE_POLICY);
+    res.status(200).end(svg);
   };
 }
 

@@ -27,6 +27,17 @@
     "React": true,
     "process": true
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".js", ".css", ".svg"]
+      }
+    }
+  },
   "rules": {
     "sort-imports": "off",
     "import/order": "off",
