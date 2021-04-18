@@ -4,7 +4,7 @@ const createSrc = (version, icon, params) => {
   const v = encodeURIComponent(version);
   const i = encodeURIComponent(icon);
   const s = new URLSearchParams(params).toString();
-  return `/api/feather?version=${v}&icon=${i}&${s}`;
+  return `https://www.iconophor.com/feather/${v}/${i}?${s}`;
 };
 
 export function Playground() {
