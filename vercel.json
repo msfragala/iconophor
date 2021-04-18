@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/feather/:version/:icon",
+      "destination": "/api/feather"
+    },
+    {
+      "source": "/material/:version/:style/:icon",
+      "destination": "/api/material"
+    },
+    {
+      "source": "/fontawesome/:version/:style/:icon",
+      "destination": "/api/fontawesome"
+    }
+  ]
+}
