@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --colors-background: #101010;
+  --colors-background-soft: #242424;
+  --colors-text: #ffffff;
+  --colors-text-soft: #adadad;
+  --colors-border: #333;
+  --colors-focus-ring: #fefefe;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--colors-background);
+  color: var(--colors-text);
+  font-size: 16px;
+}
+
+*:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--colors-focus-ring);
+  outline-offset: 0.3em;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  box-shadow: 0 0 0 2px var(--colors-focus-ring);
+  outline: 0;
+}
+
+.heading-xl {
+  @apply text-xxl tracking-wide font-bold uppercase;
+}
+
+.heading-lg {
+  @apply text-lg tracking-wide font-bold;
+}
+
+.heading-md {
+  @apply tracking-wide font-medium;
+  font-size: 18px;
+}
