@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "git-pre-commit": "sh .githooks/pre-commit"
   },
   "prettier": {
     "trailingComma": "es5",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
+    "@vercel/git-hooks": "^1.0.0",
     "autoprefixer": "^10.2.5",
     "eslint": "^7.24.0",
     "eslint-config-prettier": "^8.2.0",

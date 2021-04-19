@@ -1,0 +1,44 @@
+#!/bin/sh
+echo "Linting staged files..."
+
+JS_DIFF=$(git diff --cached --name-only --diff-filter=ACM  -- '*.js')
+CSS_DIFF=$(git diff --cached --name-only --diff-filter=ACM  -- '*.css')
+TEST_DIFF=$(git diff --cached --name-only --diff-filter=ACM  -- '*.test.js')
+MISC_DIFF=$(git diff --cached --name-only --diff-filter=ACM  -- '*.js' '*.css' '*.md' '*.json')
+
+JS_STAGED_FILES=$(echo "$JS_DIFF" | xargs echo)
+MISC_STAGED_FILES=$(echo "$MISC_DIFF" | xargs echo)
+
+SS="\033[0;7m"
+NS="\033[0;27m"
+
+# Run eslint for all staged JavaScript files
+if [ "$JS_STAGED_FILES" ]; then
+  JS_OUTPUT=$(./node_modules/.bin/eslint --color $JS_STAGED_FILES)
+  JS_STATUS="$?"
+
+  if [ "$JS_STATUS" -gt "0" ]; then
+    echo "\n${SS}  ESLINT ERRORS: ${NS}"
+    echo "$JS_OUTPUT"
+  fi
+fi
+
+# Run prettier for all staged files
+if [ "$MISC_STAGED_FILES" ]; then
+  MISC_OUTPUT=$(./node_modules/.bin/prettier --list-different $MISC_STAGED_FILES)
+  MISC_STATUS="$?"
+
+  if [ "$MISC_STATUS" -gt "0" ]; then
+    echo "\n${SS}  PRETTIER ERRORS: ${NS}\n"
+    echo "$MISC_OUTPUT"
+  fi
+fi
+
+if [[ "$JS_STATUS" -gt "0" ]] || [[ "$CSS_STATUS" -gt "0" ]] || [[ "$MISC_STATUS" -gt "0" ]]; then
+  PINK="\033[95m"
+  NC="\033[0m"
+  echo "\n🚨  Blocked commit because of linting errors. 🚨\nTry running ${PINK}yarn fix${NC} to resolve auto-fixable issues\n"
+  exit 1
+else
+  echo "✨  No linting errors found"
+fi
