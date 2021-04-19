@@ -47,7 +47,7 @@ textarea:focus-visible {
 }
 
 .heading-xl {
-  @apply text-36 xs:text-60 lg:text-72 tracking-wide font-bold uppercase;
+  @apply text-36 xs:text-60 lg:text-72 tracking-wide font-bold;
 }
 
 .heading-lg {

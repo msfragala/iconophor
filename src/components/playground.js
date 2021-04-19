@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const createSrc = (version, icon, params) => {
   const v = encodeURIComponent(version);
@@ -12,6 +12,22 @@ export function Playground() {
   const [icon, setIcon] = useState('activity');
   const [params, setParams] = useState('stroke=pink');
   const [src, setSrc] = useState(createSrc(version, icon, params));
+
+  const onChangeVersion = useCallback((event) => {
+    setVersion(event.target.value);
+  }, []);
+
+  const onChangeIcon = useCallback((event) => {
+    setIcon(event.target.value);
+  }, []);
+
+  const onChangeParams = useCallback((event) => {
+    setParams(event.target.value.replace('?', ''));
+  }, []);
+
+  const versionRef = useOnChange(onChangeVersion);
+  const iconRef = useOnChange(onChangeIcon);
+  const paramsRef = useOnChange(onChangeParams);
 
   useEffect(() => {
     setSrc(createSrc(version, icon, params));
@@ -29,10 +45,10 @@ export function Playground() {
           </label>
           <input
             className="input w-full md:w-auto"
+            defaultValue={version}
             id="playground-version"
             name="version"
-            onChange={(event) => setVersion(event.target.value)}
-            value={version}
+            ref={versionRef}
           />
         </div>
         <div>
@@ -44,10 +60,10 @@ export function Playground() {
           </label>
           <input
             className="input w-full md:w-auto"
+            defaultValue={icon}
             id="playground-icon"
             name="icon"
-            onChange={(event) => setIcon(event.target.value)}
-            value={icon}
+            ref={iconRef}
           />
         </div>
       </div>
@@ -60,14 +76,14 @@ export function Playground() {
         </label>
         <input
           className="input w-full"
+          defaultValue={`?${params}`}
           name="playground-params"
-          onChange={(event) => setParams(event.target.value.replace('?', ''))}
-          value={`?${params}`.replace('??', '?')}
+          ref={paramsRef}
         />
       </div>
       <div className="space-y-8">
         <p className="text-sm text-text-soft">
-          <code className="break-words">{src}</code>
+          <code className="break-words">{src.replace('https://www.', '')}</code>
         </p>
         <div className="border rounded p-24">
           <img alt="" className="h-64 w-64" src={src} />
@@ -75,4 +91,17 @@ export function Playground() {
       </div>
     </div>
   );
+}
+
+function useOnChange(fn) {
+  const ref = useRef();
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    node.addEventListener('change', fn);
+    return () => node.removeEventListener('change', fn);
+  }, [fn]);
+
+  return ref;
 }
