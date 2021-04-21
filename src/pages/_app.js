@@ -40,6 +40,12 @@ export default function MyApp({ Component, pageProps }) {
           <p>Made by Mitchell Fragala</p>
         </div>
       </footer>
+      <script
+        async
+        data-domain="iconophor.com"
+        defer
+        src="https://plausible.io/js/plausible.js"
+      />
     </>
   );
 }
