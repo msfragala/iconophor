@@ -2,9 +2,7 @@ import hastUtilToHtml from 'hast-util-to-html';
 import fetch from 'node-fetch';
 import { parse } from 'svg-parser';
 
-import { Exception } from './exception';
-
-const CACHE_POLICY = 'public,max-age=2592000,s-maxage=31557600';
+import { Exception } from '@/lib/exception';
 
 export function iconHandler({ params, resolveIcon }) {
   /**
@@ -40,7 +38,6 @@ export function iconHandler({ params, resolveIcon }) {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
-    res.setHeader('Cache-Control', CACHE_POLICY);
     res.status(200).end(svg);
   };
 }
@@ -71,6 +68,8 @@ const svgAttributes = [
   'stroke-miterlimit',
   'stroke-opacity',
   'stroke-width',
+  'height',
+  'width',
 ];
 
 function pullAttributes(object) {

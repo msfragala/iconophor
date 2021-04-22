@@ -16,15 +16,15 @@
   ],
   "rewrites": [
     {
-      "source": "/feather/:version/:icon",
+      "source": "/icons/feather/:version/:icon",
       "destination": "/api/feather"
     },
     {
-      "source": "/material/:version/:style/:icon",
+      "source": "/icons/material/:version/:style/:icon",
       "destination": "/api/material"
     },
     {
-      "source": "/fontawesome/:version/:style/:icon",
+      "source": "/icons/fontawesome/:version/:style/:icon",
       "destination": "/api/fontawesome"
     }
   ]
