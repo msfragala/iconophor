@@ -1,5 +1,4 @@
 import hastUtilToHtml from 'hast-util-to-html';
-import ms from 'ms';
 import fetch from 'node-fetch';
 import { parse } from 'svg-parser';
 
@@ -38,7 +37,7 @@ export function iconHandler({ params, resolveIcon }) {
     const svg = generateSvg(raw, attributes);
 
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cache-Control', `public,max-age=${ms('30d')},s-maxage=0`);
+    res.setHeader('Cache-Control', 's-maxage=0');
     res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
     res.status(200).end(svg);
   };
