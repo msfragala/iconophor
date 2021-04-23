@@ -62,7 +62,7 @@ function generateSvg(raw, attributes) {
     else props[key] = value;
   });
 
-  delete node.properties.class;
+  delete props.class;
   node.properties = props;
 
   return hastUtilToHtml(hast);
