@@ -3,14 +3,16 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 const createPath = (version, icon, params) => {
   const v = encodeURIComponent(version);
   const i = encodeURIComponent(icon);
-  const s = new URLSearchParams(params).toString();
+  const s = params.toString();
   return `/icons/feather/${v}/${i}?${s}`;
 };
+
+const initialParams = new URLSearchParams('stroke=pink&height=96');
 
 export function Playground() {
   const [version, setVersion] = useState('4.28.0');
   const [icon, setIcon] = useState('activity');
-  const [params, setParams] = useState('stroke=pink');
+  const [params, setParams] = useState(initialParams);
   const [path, setPath] = useState(createPath(version, icon, params));
 
   const onChangeVersion = useCallback((event) => {
@@ -22,7 +24,7 @@ export function Playground() {
   }, []);
 
   const onChangeParams = useCallback((event) => {
-    setParams(event.target.value.replace('?', ''));
+    setParams(new URLSearchParams(event.target.value));
   }, []);
 
   const versionRef = useOnChange(onChangeVersion);
@@ -76,7 +78,7 @@ export function Playground() {
         </label>
         <input
           className="input w-full"
-          defaultValue={`?${params}`}
+          defaultValue={`?${params.toString()}`}
           name="playground-params"
           ref={paramsRef}
         />
@@ -86,7 +88,7 @@ export function Playground() {
           <code className="break-words">iconophor.com{path}</code>
         </p>
         <div className="border rounded p-24">
-          <img alt="" className="h-64 w-64" src={path} />
+          <img alt="" className="w-content" src={path} />
         </div>
       </div>
     </div>
