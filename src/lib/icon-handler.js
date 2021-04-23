@@ -2,6 +2,7 @@ import hastUtilToHtml from 'hast-util-to-html';
 import fetch from 'node-fetch';
 import { parse } from 'svg-parser';
 
+import { svgAttributes } from '@/constants/svg-attributes';
 import { Exception } from '@/lib/exception';
 
 const nullish = (x) => x == undefined || x != x;
@@ -66,23 +67,6 @@ function generateSvg(raw, attributes) {
 
   return hastUtilToHtml(hast);
 }
-
-const svgAttributes = [
-  'color',
-  'fill',
-  'fill-opacity',
-  'fill-rule',
-  'stroke',
-  'stroke-dasharray',
-  'stroke-dashoffset',
-  'stroke-linecap',
-  'stroke-linejoin',
-  'stroke-miterlimit',
-  'stroke-opacity',
-  'stroke-width',
-  'height',
-  'width',
-];
 
 function pullAttributes(object) {
   const attrs = {};

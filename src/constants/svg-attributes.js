@@ -1,9 +1,11 @@
 export const svgAttributes = [
-  'color',
   'fill',
+  'stroke',
+  'width',
+  'height',
+  'color',
   'fill-opacity',
   'fill-rule',
-  'stroke',
   'stroke-dasharray',
   'stroke-dashoffset',
   'stroke-linecap',

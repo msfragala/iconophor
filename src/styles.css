@@ -80,3 +80,15 @@ textarea:focus-visible {
 .constrain-x {
   @apply max-w-640 w-full mx-auto px-24 xs:px-36 md:px-0;
 }
+
+@layer utilities {
+  @responsive {
+    .columns-1 {
+      column-count: 1;
+    }
+
+    .columns-2 {
+      column-count: 2;
+    }
+  }
+}

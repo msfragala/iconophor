@@ -65,7 +65,7 @@ export default function Home() {
       </section>
       <section>
         <h2 className="heading-lg mb-24">Query parameters</h2>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+        <ul className="space-y-12 md:columns-2 md:space-y-16">
           {svgAttributes.map((name) => (
             <li key={name}>
               <a
