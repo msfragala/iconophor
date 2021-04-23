@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const createSrc = (version, icon, params) => {
+const createPath = (version, icon, params) => {
   const v = encodeURIComponent(version);
   const i = encodeURIComponent(icon);
   const s = new URLSearchParams(params).toString();
-  return `https://www.iconophor.com/icons/feather/${v}/${i}?${s}`;
+  return `/icons/feather/${v}/${i}?${s}`;
 };
 
 export function Playground() {
   const [version, setVersion] = useState('4.28.0');
   const [icon, setIcon] = useState('activity');
   const [params, setParams] = useState('stroke=pink');
-  const [src, setSrc] = useState(createSrc(version, icon, params));
+  const [path, setPath] = useState(createPath(version, icon, params));
 
   const onChangeVersion = useCallback((event) => {
     setVersion(event.target.value);
@@ -30,7 +30,7 @@ export function Playground() {
   const paramsRef = useOnChange(onChangeParams);
 
   useEffect(() => {
-    setSrc(createSrc(version, icon, params));
+    setPath(createPath(version, icon, params));
   }, [version, params, icon]);
 
   return (
@@ -83,10 +83,10 @@ export function Playground() {
       </div>
       <div className="space-y-8">
         <p className="text-sm text-text-soft">
-          <code className="break-words">{src.replace('https://www.', '')}</code>
+          <code className="break-words">iconophor.com{path}</code>
         </p>
         <div className="border rounded p-24">
-          <img alt="" className="h-64 w-64" src={src} />
+          <img alt="" className="h-64 w-64" src={path} />
         </div>
       </div>
     </div>

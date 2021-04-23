@@ -4,6 +4,8 @@ import { parse } from 'svg-parser';
 
 import { Exception } from '@/lib/exception';
 
+const nullish = (x) => x == undefined || x != x;
+
 export function iconHandler({ params, resolveIcon }) {
   /**
    *
@@ -47,11 +49,20 @@ function generateSvg(raw, attributes) {
   const hast = parse(raw);
   const node = hast.children[0];
 
+  const props = { ...node.properties };
+  const viewbox = node.properties.viewBox;
+  const dimensions = deriveDimensions(viewbox, attributes);
+
+  attributes.height = dimensions.height;
+  attributes.width = dimensions.width;
+
+  Object.entries(attributes).forEach(([key, value]) => {
+    if (value === '') delete props[key];
+    else props[key] = value;
+  });
+
   delete node.properties.class;
-  node.properties = {
-    ...node.properties,
-    ...attributes,
-  };
+  node.properties = props;
 
   return hastUtilToHtml(hast);
 }
@@ -83,4 +94,32 @@ function pullAttributes(object) {
   }
 
   return attrs;
+}
+
+function deriveDimensions(viewbox, { height, width }) {
+  const parts = viewbox.split(/(?:\s*,?\s+|,)/);
+  const viewboxW = parseInt(parts[2], 10);
+  const viewboxH = parseInt(parts[3], 10);
+  const w = parseInt(width, 10);
+  const h = parseInt(height, 10);
+
+  if (isNaN(viewboxW) || isNaN(viewboxH)) {
+    return { height, width };
+  }
+
+  if (!isNaN(w) && nullish(height)) {
+    return {
+      height: (w / viewboxW) * viewboxH,
+      width: w,
+    };
+  }
+
+  if (!isNaN(h) && nullish(width)) {
+    return {
+      height: h,
+      width: (h / viewboxH) * viewboxW,
+    };
+  }
+
+  return { height, width };
 }
