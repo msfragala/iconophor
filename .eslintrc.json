@@ -96,6 +96,15 @@
       }
     },
     {
+      "files": "./tests/**/*",
+      "env": {
+        "node": true
+      },
+      "rules": {
+        "path-alias/no-relative": "off"
+      }
+    },
+    {
       "files": "./src/pages/api/**/*.js",
       "env": {
         "node": true
