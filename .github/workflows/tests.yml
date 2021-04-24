@@ -1,6 +1,6 @@
 name: CI
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
-on: [deployment_status]
+on: [deployment]
 jobs:
   api_tests:
     # only runs this job on successful deploy
@@ -20,6 +20,10 @@ jobs:
           node-version: 14
       - name: Install dependencies 🧶
         run: yarn install
+      - name: Wait for Vercel preview
+        with:
+          STATUSES_URL: ${{ github.event.deployment.statuses_url }}
+        run: node .github/actions/await-preview
       - name: Run tests 🧪
         env:
           NODE_ENV: preview
