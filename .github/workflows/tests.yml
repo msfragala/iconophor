@@ -26,7 +26,7 @@ jobs:
           STATUSES_URL: ${{ github.event.deployment.statuses_url }}
         run: node .github/actions/await-preview
       - name: Run tests 🧪
-        # env:
-        # NODE_ENV: preview
-        # PREVIEW_URL: ${{ steps.preview.outputs }}
-        run: echo '${{ steps.preview.outputs.preview_url }}'
+        env:
+        NODE_ENV: preview
+        PREVIEW_URL: ${{ steps.preview.outputs.preview_url }}
+        run: yarn test
