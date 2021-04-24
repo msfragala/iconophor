@@ -54,8 +54,8 @@ function generateSvg(raw, attributes) {
   const viewbox = node.properties.viewBox;
   const dimensions = deriveDimensions(viewbox, attributes);
 
-  attributes.height = dimensions.height;
-  attributes.width = dimensions.width;
+  attributes.height = dimensions.height ?? props.height;
+  attributes.width = dimensions.width ?? props.width;
 
   Object.entries(attributes).forEach(([key, value]) => {
     if (value === '') delete props[key];
