@@ -5,10 +5,9 @@ let tm = setTimeout(checkStatus, 0);
 
 async function checkStatus() {
   const [status] = await fetch(statusesUrl).then((res) => res.json());
-  console.log(status);
 
   if (status && status.state === 'success') {
-    console.log(status.target_url);
+    console.log(`::set-output name=preview_url::${status.target_url}`);
     clearTimeout(tm);
     return;
   }
