@@ -5,7 +5,6 @@ jobs:
   api_tests:
     # only runs this job on successful deploy
     name: API Tests
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Dump GitHub context
