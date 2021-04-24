@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies 🧶
         run: yarn install
       - name: Wait for Vercel preview
-        with:
+        env:
           STATUSES_URL: ${{ github.event.deployment.statuses_url }}
         run: node .github/actions/await-preview
       - name: Run tests 🧪
