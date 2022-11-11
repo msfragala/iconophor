@@ -13,4 +13,4 @@ export const svgAttributes = [
   'stroke-miterlimit',
   'stroke-opacity',
   'stroke-width',
-];
+] as const;

@@ -1,26 +1,21 @@
 import hastUtilToHtml from 'hast-util-to-html';
 import fetch from 'node-fetch';
-import { parse } from 'svg-parser';
-
+import { ElementNode, parse } from 'svg-parser';
 import { svgAttributes } from '@/constants/svg-attributes';
 import { Exception } from '@/lib/exception';
+import type { APIContext, APIRoute } from 'astro';
 
-const nullish = (x) => x == undefined || x != x;
+const nullish = (x: any) => x == undefined || x != x;
 
-export function iconHandler({ params, resolveIcon }) {
-  /**
-   *
-   * @param {import('@vercel/node').VercelRequest} req
-   * @param {import('@vercel/node').VercelResponse} res
-   */
-  return async (req, res) => {
-    params.forEach((param) => {
-      if (!req.query[param]) {
-        throw new Exception(400, `Missing ${param} parameter`);
-      }
-    });
+export function iconHandler(
+  fn: (params: APIContext['params']) => string
+): APIRoute {
+  return async ({ request, params }): Promise<Response> => {
+    const searchParams = new URL(request.url).searchParams;
+    const query = Object.fromEntries(searchParams);
 
-    const url = await resolveIcon(req.query);
+    const url = fn(params);
+
     const iconResponse = await fetch(url);
 
     if (iconResponse.status === 404) {
@@ -35,23 +30,30 @@ export function iconHandler({ params, resolveIcon }) {
       throw new Exception(500, 'Resource not SVG');
     }
 
-    const raw = await iconResponse.text();
-    const attributes = pullAttributes(req.query);
-    const svg = generateSvg(raw, attributes);
+    let svg = await iconResponse.text();
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Cache-Control', 's-maxage=0');
-    res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
-    res.status(200).end(svg);
+    if (hasSvgParam(searchParams)) {
+      const attributes = pullAttributes(query);
+      svg = generateSvg(svg, attributes);
+    }
+
+    return new Response(svg, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 's-maxage=0',
+        'Content-Type': 'image/svg+xml; charset=utf-8',
+      },
+    });
   };
 }
 
-function generateSvg(raw, attributes) {
+function generateSvg(raw: string, attributes: Record<string, string>) {
   const hast = parse(raw);
-  const node = hast.children[0];
+  const node = hast.children[0] as ElementNode;
 
   const props = { ...node.properties };
-  const viewbox = node.properties.viewBox;
+  const viewbox = node.properties?.viewBox as string;
   const dimensions = deriveDimensions(viewbox, attributes);
 
   attributes.height = dimensions.height ?? props.height;
@@ -68,8 +70,8 @@ function generateSvg(raw, attributes) {
   return hastUtilToHtml(hast);
 }
 
-function pullAttributes(object) {
-  const attrs = {};
+function pullAttributes(object: Record<string, string>) {
+  const attrs: Record<string, string> = {};
 
   for (let key of svgAttributes) {
     if (object[key] != undefined) {
@@ -80,7 +82,10 @@ function pullAttributes(object) {
   return attrs;
 }
 
-function deriveDimensions(viewbox, { height, width }) {
+function deriveDimensions(
+  viewbox: string,
+  { height, width }: Record<string, any>
+) {
   const parts = viewbox.split(/(?:\s*,?\s+|,)/);
   const viewboxW = parseInt(parts[2], 10);
   const viewboxH = parseInt(parts[3], 10);
@@ -106,4 +111,8 @@ function deriveDimensions(viewbox, { height, width }) {
   }
 
   return { height, width };
+}
+
+function hasSvgParam(params: URLSearchParams) {
+  return svgAttributes.some((attr) => params.has(attr));
 }

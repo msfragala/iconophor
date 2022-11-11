@@ -4,7 +4,9 @@ const createPath = (version, icon, params) => {
   const v = encodeURIComponent(version);
   const i = encodeURIComponent(icon);
   const s = params.toString();
-  return `/icons/feather/${v}/${i}?${s}`;
+  let path = `/icons/feather/${v}/${i}`;
+  if (s) path += `?${s}`;
+  return path;
 };
 
 const initialParams = new URLSearchParams('stroke=pink&height=96');

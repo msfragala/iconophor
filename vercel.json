@@ -13,19 +13,5 @@
         }
       ]
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/icons/feather/:version/:icon",
-      "destination": "/api/feather"
-    },
-    {
-      "source": "/icons/material/:version/:style/:icon",
-      "destination": "/api/material"
-    },
-    {
-      "source": "/icons/fontawesome/:version/:style/:icon",
-      "destination": "/api/fontawesome"
-    }
   ]
 }
