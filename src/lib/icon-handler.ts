@@ -41,7 +41,8 @@ export function iconHandler(
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Cache-Control': 's-maxage=0',
+        'Cache-Control':
+          's-maxage=2592000, max-age=604800, stale-while-revalidate=604800, immutable',
         'Content-Type': 'image/svg+xml; charset=utf-8',
       },
     });
