@@ -3,6 +3,8 @@
   "compilerOptions": {
     "preserveSymlinks": true,
     "baseUrl": ".",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "paths": {
       "@/*": ["./src/*"]
     }

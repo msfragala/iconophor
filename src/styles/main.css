@@ -89,4 +89,8 @@ textarea:focus-visible {
   .columns-2 {
     column-count: 2;
   }
+
+  .mask-svg {
+    mask: var(--mask-svg) center / contain no-repeat;
+  }
 }
