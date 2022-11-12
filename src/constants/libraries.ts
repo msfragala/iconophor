@@ -22,4 +22,12 @@ export const FontAwesome = {
   unpkg: 'https://unpkg.com/browse/@fortawesome/fontawesome-free/',
 };
 
-export const libraries = [FeatherIcons, MaterialDesign, FontAwesome];
+export const Heroicons = {
+  name: 'Heroicons',
+  urlPattern: 'iconophor.com/icons/heroicons/:version/:style/:icon',
+  github: 'https://github.com/tailwindlabs/heroicons',
+  homepage: 'https://heroicons.com/',
+  unpkg: 'https://unpkg.com/browse/heroicons/',
+};
+
+export const libraries = [FeatherIcons, MaterialDesign, FontAwesome, Heroicons];
