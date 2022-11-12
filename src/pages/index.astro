@@ -13,15 +13,26 @@ import Layout from '@/layouts/Layout.astro';
     <section>
       <h1 class="heading-xl text-center">Iconophor</h1>
       <p class="mt-48">
-        Iconophor is an{' '}
+        Iconophor is an
+        {' '}
         <a class="link" href="https://github.com/msfragala/iconophor">
           open-source
-        </a>{' '}
+        </a>
+        {' '}
         CDN for popular SVG icon libraries that enables you to load icons as images
-        while still controlling the fill, stroke, etc. via query parameters. Loading
-        SVG icons as images can be beneficial for performance in some contexts, especially
-        when using{' '}
-        <span class="inline-code">loading=&#34;lazy&#34;</span>.
+        or using
+        {' '}
+        <a
+          class="link"
+          href="https://developer.mozilla.org/en-US/docs/Web/CSS/mask"
+          >CSS masks</a
+        >
+        {' '}
+        while still controlling the fill, stroke width, etc. via query parameters.
+        Embedding the SVG source code inline is a common way to use icons in UI frameworks,
+        but this can cause undesirable page bloat. Loading icons as images or masks
+        instead can be beneficial for performance in some contexts by reducing duplicate
+        markup and leveraging of caching.
       </p>
     </section>
     <section>
@@ -37,7 +48,7 @@ import Layout from '@/layouts/Layout.astro';
             <li>
               <h3 class="mb-4">
                 <a
-                  class="heading-md text-pink-300 hover:underline"
+                  class="heading-md text-pink-300 hover:underline focus-visible:underline"
                   href={library.homepage}
                 >
                   {library.name}
@@ -46,7 +57,7 @@ import Layout from '@/layouts/Layout.astro';
               <p class="mb-8">
                 <a
                   aria-label={`${library.name} on GitHub`}
-                  class="text-sm hover:underline"
+                  class="text-sm hover:underline focus-visible:underline"
                   href={library.github}
                 >
                   GitHub
@@ -54,7 +65,7 @@ import Layout from '@/layouts/Layout.astro';
                 •{' '}
                 <a
                   aria-label={`${library.name} on Unpkg`}
-                  class="text-sm hover:underline"
+                  class="text-sm hover:underline focus-visible:underline"
                   href={library.unpkg}
                 >
                   Unpkg

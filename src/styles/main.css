@@ -74,7 +74,7 @@ textarea:focus-visible {
 }
 
 .link {
-  @apply text-pink-300 hover:underline;
+  @apply text-pink-300 hover:underline focus-visible:underline;
 }
 
 .constrain-x {
