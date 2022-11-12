@@ -1,5 +1,6 @@
-module.exports = {
-  purge: ['./**/*.js'],
+/** @type {import('tailwindcss').Config} */
+const config = {
+  content: ['./**/*.{astro,js,jsx,ts,tsx}'],
   theme: {
     fontSize: {
       em: '1em',
@@ -55,6 +56,8 @@ module.exports = {
     },
   },
 };
+
+module.exports = config;
 
 function scale({ start, end, step }) {
   let output = {};

@@ -6,10 +6,7 @@
     "ecmaFeatures": {
       "globalReturn": false
     },
-    "requireConfigFile": false,
-    "babelOptions": {
-      "presets": ["next/babel"]
-    }
+    "requireConfigFile": false
   },
   "env": {
     "browser": true,

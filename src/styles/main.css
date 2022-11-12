@@ -82,13 +82,11 @@ textarea:focus-visible {
 }
 
 @layer utilities {
-  @responsive {
-    .columns-1 {
-      column-count: 1;
-    }
+  .columns-1 {
+    column-count: 1;
+  }
 
-    .columns-2 {
-      column-count: 2;
-    }
+  .columns-2 {
+    column-count: 2;
   }
 }
