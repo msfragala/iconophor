@@ -1,11 +1,11 @@
+import type { APIContext, APIRoute } from 'astro';
 import hastUtilToHtml from 'hast-util-to-html';
 import fetch from 'node-fetch';
 import { ElementNode, parse } from 'svg-parser';
 import { svgAttributes } from '@/constants/svg-attributes';
 import { Exception } from '@/lib/exception';
-import type { APIContext, APIRoute } from 'astro';
 
-const nullish = (x: any) => x == undefined || x != x;
+const nullish = (x: unknown) => x == undefined || x != x;
 
 export function iconHandler(
   fn: (params: APIContext['params']) => string
@@ -56,8 +56,8 @@ function generateSvg(raw: string, attributes: Record<string, string>) {
   const viewbox = node.properties?.viewBox as string;
   const dimensions = deriveDimensions(viewbox, attributes);
 
-  attributes.height = dimensions.height ?? props.height;
-  attributes.width = dimensions.width ?? props.width;
+  attributes.height = (dimensions.height ?? props.height).toString();
+  attributes.width = (dimensions.width ?? props.width).toString();
 
   Object.entries(attributes).forEach(([key, value]) => {
     if (value === '') delete props[key];
@@ -73,7 +73,7 @@ function generateSvg(raw: string, attributes: Record<string, string>) {
 function pullAttributes(object: Record<string, string>) {
   const attrs: Record<string, string> = {};
 
-  for (let key of svgAttributes) {
+  for (const key of svgAttributes) {
     if (object[key] != undefined) {
       attrs[key] = object[key];
     }
@@ -84,7 +84,7 @@ function pullAttributes(object: Record<string, string>) {
 
 function deriveDimensions(
   viewbox: string,
-  { height, width }: Record<string, any>
+  { height, width }: Record<string, string>
 ) {
   const parts = viewbox.split(/(?:\s*,?\s+|,)/);
   const viewboxW = parseInt(parts[2], 10);

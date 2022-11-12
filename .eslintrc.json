@@ -1,5 +1,5 @@
 {
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
     "allowImportExportEverywhere": false,
@@ -12,66 +12,37 @@
     "browser": true,
     "es6": true
   },
-  "plugins": ["react-hooks", "simple-import-sort", "path-alias"],
+  "plugins": ["simple-import-sort", "path-alias", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:import/errors",
     "plugin:import/warnings",
+    "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
   "globals": {
-    "React": true,
     "process": true
   },
   "settings": {
-    "react": {
-      "version": "detect"
-    },
     "import/resolver": {
       "alias": {
         "map": [["@", "./src"]],
-        "extensions": [".js", ".css", ".svg"]
+        "extensions": [".js", ".css", ".svg", ".ts", ".tsx"]
       }
     }
   },
   "rules": {
     "sort-imports": "off",
-    "import/order": "off",
     "path-alias/no-relative": [
       "error",
       {
         "exceptions": ["*.module.css"]
       }
     ],
-    "react/button-has-type": "warn",
-    "react/function-component-definition": "error",
-    "react/jsx-fragments": ["error", "syntax"],
-    "react/jsx-sort-props": "error",
-    "react/jsx-wrap-multilines": "error",
-    "react/no-array-index-key": "warn",
-    "react/no-danger": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "react-hooks/rules-of-hooks": "error",
-    "react/prop-types": "off",
-    "react/jsx-no-target-blank": [
-      "error",
-      {
-        "allowReferrer": true
-      }
-    ],
-    "react/self-closing-comp": [
-      "error",
-      {
-        "component": true,
-        "html": true
-      }
-    ],
     "no-debugger": "error",
     "no-else-return": "error",
     "no-extra-bind": "error",
     "no-implicit-coercion": "error",
-    "no-unused-vars": "error",
+    "no-unused-vars": "off",
     "no-var": "error",
     "no-restricted-imports": [
       "error",
@@ -80,8 +51,19 @@
         "patterns": ["lodash/*"]
       }
     ],
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   },
   "overrides": [
     {
@@ -89,22 +71,15 @@
       "env": {
         "browser": false,
         "commonjs": true,
-        "node": true
+        "node": true,
+        "es6": true
       }
     },
     {
-      "files": "./tests/**/*",
+      "files": "./src/pages/**/*.{js,ts}",
       "env": {
-        "node": true
-      },
-      "rules": {
-        "path-alias/no-relative": "off"
-      }
-    },
-    {
-      "files": "./src/pages/api/**/*.js",
-      "env": {
-        "node": true
+        "node": true,
+        "es6": true
       }
     }
   ]
