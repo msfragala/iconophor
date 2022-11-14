@@ -26,8 +26,22 @@ export const Heroicons = {
   name: 'Heroicons',
   urlPattern: 'iconophor.com/icons/heroicons/:version/:style/:icon',
   github: 'https://github.com/tailwindlabs/heroicons',
-  homepage: 'https://heroicons.com/',
+  homepage: 'https://heroicons.com',
   unpkg: 'https://unpkg.com/browse/heroicons/',
 };
 
-export const libraries = [FeatherIcons, MaterialDesign, FontAwesome, Heroicons];
+export const SanityIcons = {
+  name: '@sanity/icons',
+  urlPattern: 'iconophor.com/icons/sanity-icons/:version/:icon',
+  github: 'https://github.com/sanity-io/design',
+  homepage: 'https://www.sanity.io/ui',
+  unpkg: 'https://unpkg.com/browse/@sanity/icons/',
+};
+
+export const libraries = [
+  FeatherIcons,
+  FontAwesome,
+  Heroicons,
+  MaterialDesign,
+  SanityIcons,
+];
