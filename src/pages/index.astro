@@ -81,12 +81,12 @@ import Layout from '@/layouts/Layout.astro';
     </section>
     <section>
       <h2 class="heading-lg mb-24">Query parameters</h2>
-      <ul class="space-y-12 md:columns-2 md:space-y-16">
+      <ul class="space-y-12 sm:columns-2 sm:space-y-16">
         {
           svgAttributes.map((name) => (
             <li>
               <a
-                class="bg-background-soft hover:text-pink-300 text-sm w-content px-8 py-4 rounded block"
+                class="pill"
                 href={`https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/${name}`}
               >
                 <code>?{name}</code>

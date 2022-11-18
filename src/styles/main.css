@@ -2,48 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --colors-background: #101010;
-  --colors-background-soft: #242424;
-  --colors-text: #ffffff;
-  --colors-text-soft: #adadad;
-  --colors-border: #333;
-  --colors-focus-ring: #fefefe;
-}
+@layer base {
+  :root {
+    --colors-background: #101010;
+    --colors-background-soft: #242424;
+    --colors-text: #ffffff;
+    --colors-text-soft: #adadad;
+    --colors-border: #333;
+    --colors-focus-ring: theme('colors.blue.500');
+    --focus-ring-offset: 0.3em;
+    --focus-ring-width: 2px;
+  }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-html,
-body {
-  background: var(--colors-background);
-  color: var(--colors-text);
-  font-size: 16px;
-}
+  html,
+  body {
+    background: var(--colors-background);
+    color: var(--colors-text);
+    font-size: 16px;
+  }
 
-body {
-  max-width: 100vw;
-  overflow-x: clip;
-}
+  body {
+    max-width: 100vw;
+    overflow-x: clip;
+  }
 
-*:focus:not(:focus-visible) {
-  outline: none !important;
-}
+  *:focus:not(:focus-visible) {
+    outline: none !important;
+  }
 
-*:focus-visible {
-  outline: 2px solid var(--colors-focus-ring);
-  outline-offset: 0.3em;
-}
+  *:focus-visible {
+    isolation: isolate;
+    outline: var(--focus-ring-width) solid var(--colors-focus-ring);
+    outline-offset: var(--focus-ring-offset);
+    z-index: 1;
+  }
 
-button:focus-visible,
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  box-shadow: 0 0 0 2px var(--colors-focus-ring);
-  outline: 0;
+  :is(h1, h2, h3, h4, p) a:focus-visible {
+    display: inline-block;
+    background: var(--colors-background);
+  }
+
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    --focus-ring-offset: 0;
+  }
 }
 
 .heading-xl {
@@ -61,6 +71,7 @@ textarea:focus-visible {
 
 .pill {
   @apply bg-background-soft rounded px-12 py-8 font-mono block w-content text-sm;
+  --focus-ring-offset: 0;
 }
 
 .inline-code {
