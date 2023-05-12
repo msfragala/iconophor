@@ -8,13 +8,17 @@ import { Exception } from '@/lib/exception';
 const nullish = (x: unknown) => x == undefined || x != x;
 
 export function iconHandler(
-  fn: (params: APIContext['params']) => string
+  fn: (params: APIContext['params']) => string | undefined
 ): APIRoute {
   return async ({ request, params }): Promise<Response> => {
     const searchParams = new URL(request.url).searchParams;
     const query = Object.fromEntries(searchParams);
 
     const url = fn(params);
+
+    if (!url) {
+      throw new Exception(404, 'Icon not found');
+    }
 
     const iconResponse = await fetch(url);
 
