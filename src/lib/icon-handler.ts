@@ -1,7 +1,7 @@
 import type { APIContext, APIRoute } from 'astro';
-import hastUtilToHtml from 'hast-util-to-html';
+import { toHtml } from 'hast-util-to-html';
 import fetch from 'node-fetch';
-import { ElementNode, parse } from 'svg-parser';
+import { type ElementNode, parse } from 'svg-parser';
 import { svgAttributes } from '@/constants/svg-attributes';
 import { Exception } from '@/lib/exception';
 
@@ -72,7 +72,7 @@ function generateSvg(raw: string, attributes: Record<string, string>) {
   delete props.class;
   node.properties = props;
 
-  return hastUtilToHtml(hast);
+  return toHtml(hast);
 }
 
 function pullAttributes(object: Record<string, string>) {
