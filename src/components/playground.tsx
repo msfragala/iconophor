@@ -39,7 +39,9 @@ export function Playground() {
           <label
             class="block text-sm text-text-soft mb-4"
             for="playground-version"
-          >Version</label>
+          >
+            Version
+          </label>
           <input
             class="input w-full md:w-auto"
             value={version()}

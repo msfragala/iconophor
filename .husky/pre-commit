@@ -1,0 +1,105 @@
+#!/bin/bash
+
+COLOR_NONE='\033[0m'
+COLOR_RED='\033[1;31m'
+EXIT_CODE=0
+
+run_eslint () {
+  local CONFIG_DIFF=$(git diff --staged --name-only -- .eslintrc)
+  local FILES_DIFF=$(git diff --staged --name-only --diff-filter=d | grep -E '.(js|jsx|mjs|ts|tsx)$')
+  local RESULT="0"
+  local OUTPUT=""
+
+  if [ -n "$CONFIG_DIFF" ]; then
+    echo "ESLint config updated — linting all files..."
+    OUTPUT=$(node_modules/.bin/eslint --color '**/*.{js,jsx,mjs,ts,tsx}');
+    RESULT=$?;
+  elif [ -n "$FILES_DIFF" ]; then
+    echo "Running ESLint on staged files..."
+    OUTPUT=$(node_modules/.bin/eslint --color $FILES_DIFF);
+    RESULT=$?;
+  fi
+
+  if [ "$RESULT" -ne 0 ]; then
+    EXIT_CODE=1
+    # Replace previous stdout with error message
+    printf "\033[1A"
+    printf "\033[K"
+    printf "\n🚨 ESLint issues found:\n$OUTPUT\n"
+  elif [ -n "$CONFIG_DIFF$FILES_DIFF" ]; then
+    # Clear previous message if all good
+    printf '\033[1A\r'
+  fi
+}
+
+run_stylelint () {
+  local CONFIG_DIFF=$(git diff --name-only --staged -- .stylelintc)
+  local FILES_DIFF=$(git diff --staged --name-only --diff-filter=d | grep -E '.css$')
+  local RESULT="0"
+  local OUTPUT=""
+
+  if [ -n "$CONFIG_DIFF" ]; then
+    echo "Stylelint config updated — checking all files"
+    OUTPUT=$(node_modules/.bin/stylelint --color "**/*.css")
+    RESULT=$?
+  elif [ -n "$FILES_DIFF" ]; then
+    echo "Running Stylelint on staged files"
+    OUTPUT=$(node_modules/.bin/stylelint --color $FILES_DIFF)
+    RESULT=$?
+  fi
+
+  if [ $RESULT -ne 0 ]; then
+    # Replace previous stdout with error message
+    printf "\033[1A"
+    printf "\033[K"
+    printf "\n🚨 ESLint issues found:\n$OUTPUT\n"
+  elif [ -n "$CONFIG_DIFF$FILES_DIFF" ]; then
+    # Clear previous message if all good
+    printf '\033[1A\r'
+  fi
+}
+
+run_prettier () {
+  local CONFIG_DIFF=$(git diff --name-only --staged -- .prettierrc .prettierignore)
+  local FILES_DIFF=$(git diff --staged --name-only --diff-filter=d | grep -E '.(css|js|json|jsx|md|mjs|ts|tsx)$')
+  local RESULT="0"
+  local OUTPUT=""
+
+  if [ -n "$CONFIG_DIFF" ]; then
+    echo "Prettier config updated — checking all files"
+    OUTPUT=$(node_modules/.bin/prettier . --list-different --ignore-unknown)
+    RESULT=$?
+  elif [ -n "$FILES_DIFF" ]; then
+    echo "Running Prettier on staged files"
+    OUTPUT=$(node_modules/.bin/prettier --list-different $FILES_DIFF)
+    RESULT=$?
+  fi
+
+  if [ "$RESULT" -ne 0 ]; then
+    EXIT_CODE=1
+    # Replace previous stdout with error message
+    printf "\033[1A"
+    printf "\033[K"
+    printf "\n🚨 Prettier issues found:\n\n${COLOR_RED}$OUTPUT${COLOR_NONE}\n\n"
+  elif [ -n "$CONFIG_DIFF$FILES_DIFF" ]; then
+    # Clear previous message if all good
+    printf '\033[1A\r'
+  fi
+}
+
+no_wip() {
+  local COMMIT_MESSAGE="$(git log -1 --pretty=%B)"
+
+  if [ "$COMMIT_MESSAGE" = "WIP" ]; then
+    EXIT_CODE=1
+    printf "\n🚨 Previous commit is marked as WIP, cannot commit\n\n"
+  fi
+}
+
+
+run_eslint
+run_stylelint
+run_prettier
+no_wip
+
+exit $EXIT_CODE

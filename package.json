@@ -11,7 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
-    "git-pre-commit": "sh .githooks/pre-commit"
+    "prepare": "husky install"
   },
   "prettier": {
     "trailingComma": "es5",
@@ -53,6 +53,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "esm": "^3.2.25",
+    "husky": "^8.0.3",
     "postcss": "^8.4.31",
     "postcss-pxtorem": "^6.0.0",
     "prettier": "^3.0.3",
