@@ -2,8 +2,8 @@ import type { APIContext, APIRoute } from 'astro';
 import { toHtml } from 'hast-util-to-html';
 import fetch from 'node-fetch';
 import { type ElementNode, parse } from 'svg-parser';
-import { svgAttributes } from '@/constants/svg-attributes';
-import { Exception } from '@/lib/exception';
+import { svgAttributes } from '../constants/svg-attributes';
+import { Exception } from './exception';
 
 const nullish = (x: unknown) => x == undefined || x != x;
 

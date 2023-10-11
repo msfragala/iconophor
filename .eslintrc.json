@@ -25,7 +25,7 @@
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [["@", "./src"]],
+        "map": [["@", "./src/"]],
         "extensions": [".js", ".css", ".svg", ".ts", ".tsx"]
       }
     }

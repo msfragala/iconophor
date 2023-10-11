@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { Exception } from '@/lib/exception';
+import { Exception } from '../lib/exception';
 
 export function catchError(fn: APIRoute): APIRoute {
   return async (context) => {
