@@ -6,7 +6,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   output: 'server',
   integrations: [solid()],
-  adapter: vercel(),
+  adapter: vercel({
+    edgeMiddleware: true,
+  }),
   markdown: {
     shikiConfig: {
       theme: 'dark-plus',
