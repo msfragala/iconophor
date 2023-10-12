@@ -1,86 +1,71 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "sourceType": "module",
-    "allowImportExportEverywhere": false,
-    "ecmaFeatures": {
-      "globalReturn": false
-    },
-    "requireConfigFile": false
-  },
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "plugins": ["simple-import-sort", "path-alias", "@typescript-eslint"],
-  "extends": [
-    "eslint:recommended",
-    "plugin:import/warnings",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
-  "globals": {
-    "process": true
-  },
-  "settings": {
-    "import/resolver": {
-      "alias": {
-        "map": [["@", "./src"]],
-        "extensions": [".js", ".css", ".svg", ".ts", ".tsx"]
-      }
-    }
-  },
-  "rules": {
-    "sort-imports": "off",
-    "path-alias/no-relative": [
-      "error",
-      {
-        "exceptions": ["*.module.css"]
-      }
-    ],
-    "no-debugger": "error",
-    "no-else-return": "error",
-    "no-extra-bind": "error",
-    "no-implicit-coercion": "error",
-    "no-unused-vars": "off",
-    "no-var": "error",
-    "no-restricted-imports": [
-      "error",
-      {
-        "paths": ["lodash", "moment"],
-        "patterns": ["lodash/*"]
-      }
-    ],
-    "import/first": "error",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error",
-    "import/order": [
-      "error",
-      {
-        "newlines-between": "never",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
-      }
-    ]
-  },
-  "overrides": [
-    {
-      "files": "./*.js",
-      "env": {
-        "browser": false,
-        "commonjs": true,
-        "node": true,
-        "es6": true
-      }
-    },
-    {
-      "files": "./src/pages/**/*.{js,ts}",
-      "env": {
-        "node": true,
-        "es6": true
-      }
-    }
-  ]
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 2020,
+		"extraFileExtensions": [".svelte"]
+	},
+	"env": {
+		"browser": true,
+		"es2017": true
+	},
+	"plugins": ["import", "path-alias", "@typescript-eslint"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:import/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:svelte/recommended",
+		"prettier"
+	],
+	"settings": {
+		"alias": {
+			"map": [["@", "./src"]],
+			"extensions": [".js", ".css", ".svg", ".ts", ".tsx"]
+		},
+		"import/resolver": {
+			"typescript": true
+		}
+	},
+	"rules": {
+		"sort-imports": "off",
+		"path-alias/no-relative": "error",
+		"import/first": "error",
+		"import/newline-after-import": "error",
+		"import/no-duplicates": "error",
+		"import/order": [
+			"error",
+			{
+				"newlines-between": "never",
+				"alphabetize": {
+					"order": "asc",
+					"caseInsensitive": true
+				}
+			}
+		]
+	},
+	"overrides": [
+		{
+			"files": ["*.svelte"],
+			"parser": "svelte-eslint-parser",
+			"parserOptions": {
+				"parser": "@typescript-eslint/parser"
+			}
+		},
+		{
+			"files": "./*.cjs",
+			"env": {
+				"browser": false,
+				"commonjs": true,
+				"node": true,
+				"es6": true
+			}
+		},
+		{
+			"files": "./src/routes/**/+server.{js,ts}",
+			"env": {
+				"browser": false,
+				"es6": true
+			}
+		}
+	]
 }

@@ -1,68 +1,79 @@
 {
-  "name": "iconophor",
-  "version": "1.0.0",
-  "repository": "git@github.com:msfragala/iconophor.git",
-  "author": "Mitchell Fragala <ms.fragala@gmail.com>",
-  "private": true,
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "start": "astro dev",
-    "preview": "astro preview",
-    "astro": "astro",
-    "lint": "eslint .",
-    "git-pre-commit": "sh .githooks/pre-commit"
-  },
-  "prettier": {
-    "trailingComma": "es5",
-    "tabWidth": 2,
-    "quoteProps": "consistent",
-    "singleQuote": true
-  },
-  "browserslist": [
-    "last 1 chrome version",
-    "last 1 firefox version",
-    "last 1 safari version",
-    "last 1 ios version",
-    "last 1 edge version",
-    "last 1 chromeandroid version"
-  ],
-  "dependencies": {
-    "@astrojs/vercel": "^2.3.3",
-    "hast-util-to-html": "^7.1.2",
-    "ms": "^2.1.3",
-    "node-fetch": "^2.6.1",
-    "svg-parser": "^2.0.4"
-  },
-  "devDependencies": {
-    "@astrojs/solid-js": "^1.2.2",
-    "@babel/core": "^7.20.2",
-    "@babel/eslint-parser": "^7.13.14",
-    "@types/node-fetch": "^2.6.2",
-    "@types/svg-parser": "^2.0.3",
-    "@typescript-eslint/eslint-plugin": "^5.42.1",
-    "@typescript-eslint/parser": "^5.42.1",
-    "astro": "^1.6.7",
-    "autoprefixer": "^10.2.5",
-    "eslint": "^8.27.0",
-    "eslint-config-prettier": "^8.2.0",
-    "eslint-import-resolver-alias": "^1.1.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-path-alias": "^1.0.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-simple-import-sort": "^7.0.0",
-    "esm": "^3.2.25",
-    "postcss": "^8.2.10",
-    "postcss-pxtorem": "^6.0.0",
-    "prettier": "^2.2.1",
-    "solid-js": "^1.6.2",
-    "stylelint": "^13.12.0",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-config-recommended": "^4.0.0",
-    "stylelint-order": "^4.1.0",
-    "stylelint-prettier": "^1.2.0",
-    "tailwindcss": "^3.2.4",
-    "typescript": "^4.8.4",
-    "uvu": "^0.5.1"
-  }
+	"name": "iconophor",
+	"version": "1.0.0",
+	"type": "module",
+	"repository": "git@github.com:msfragala/iconophor.git",
+	"author": "Mitchell Fragala <ms.fragala@gmail.com>",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"lint": "eslint .",
+		"prepare": "husky install"
+	},
+	"prettier": {
+		"trailingComma": "es5",
+		"tabWidth": 2,
+		"useTabs": true,
+		"quoteProps": "consistent",
+		"printWidth": 100,
+		"singleQuote": true,
+		"plugins": [
+			"prettier-plugin-svelte"
+		],
+		"pluginSearchDirs": [
+			"."
+		],
+		"overrides": [
+			{
+				"files": "*.svelte",
+				"options": {
+					"parser": "svelte"
+				}
+			}
+		]
+	},
+	"browserslist": [
+		"last 1 chrome version",
+		"last 1 firefox version",
+		"last 1 safari version",
+		"last 1 ios version",
+		"last 1 edge version",
+		"last 1 chromeandroid version"
+	],
+	"dependencies": {
+		"hast-util-to-html": "^9.0.0",
+		"lodash.debounce": "^4.0.8",
+		"ms": "^2.1.3",
+		"node-fetch": "^3.3.2",
+		"svg-parser": "^2.0.4"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-vercel": "^3.0.3",
+		"@sveltejs/kit": "^1.20.4",
+		"@types/lodash.debounce": "^4.0.7",
+		"@types/svg-parser": "^2.0.4",
+		"@typescript-eslint/eslint-plugin": "^6.0.0",
+		"@typescript-eslint/parser": "^6.7.5",
+		"autoprefixer": "^10.4.14",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-import-resolver-typescript": "^3.6.1",
+		"eslint-plugin-import": "^2.28.1",
+		"eslint-plugin-path-alias": "^1.0.0",
+		"eslint-plugin-svelte": "^2.34.0",
+		"husky": "^8.0.3",
+		"postcss": "^8.4.24",
+		"postcss-load-config": "^4.0.1",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.10.1",
+		"svelte": "^4.0.5",
+		"svelte-check": "^3.4.3",
+		"tailwindcss": "^3.3.2",
+		"tslib": "^2.4.1",
+		"typescript": "^5.2.2",
+		"vite": "^4.4.2"
+	}
 }

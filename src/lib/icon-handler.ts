@@ -1,123 +1,126 @@
-import type { APIContext, APIRoute } from 'astro';
-import hastUtilToHtml from 'hast-util-to-html';
-import fetch from 'node-fetch';
-import { ElementNode, parse } from 'svg-parser';
-import { svgAttributes } from '@/constants/svg-attributes';
-import { Exception } from '@/lib/exception';
+import { error, type RequestHandler } from '@sveltejs/kit';
+import { toHtml } from 'hast-util-to-html';
+import type { RootContent } from 'hast-util-to-html/lib';
+import { type ElementNode, parse } from 'svg-parser';
+import { svgAttributes } from '@/lib/svg-attributes';
 
 const nullish = (x: unknown) => x == undefined || x != x;
 
-export function iconHandler(
-  fn: (params: APIContext['params']) => string | undefined
-): APIRoute {
-  return async ({ request, params }): Promise<Response> => {
-    const searchParams = new URL(request.url).searchParams;
-    const query = Object.fromEntries(searchParams);
+export function iconHandler<T extends string>(
+	paramNames: T[],
+	fn: (params: Partial<Record<T, string>>) => string | undefined
+): RequestHandler {
+	return async ({ request, params }): Promise<Response> => {
+		const searchParams = new URL(request.url).searchParams;
+		const query = Object.fromEntries(searchParams);
 
-    const url = fn(params);
+		paramNames.forEach((param) => {
+			if (!params[param]) {
+				throw error(400, 'Missing pathname params');
+			}
+		});
 
-    if (!url) {
-      throw new Exception(404, 'Icon not found');
-    }
+		const url = fn(params);
 
-    const iconResponse = await fetch(url);
+		if (!url) {
+			throw error(404, 'Icon not found');
+		}
 
-    if (iconResponse.status === 404) {
-      throw new Exception(404, 'Icon not found');
-    }
+		const iconResponse = await fetch(url);
 
-    if (!iconResponse.ok) {
-      throw new Exception(500, 'Error fetching icon');
-    }
+		if (iconResponse.status === 404) {
+			throw error(404, 'Icon not found');
+		}
 
-    if (iconResponse.headers.get('content-type') !== 'image/svg+xml') {
-      throw new Exception(500, 'Resource not SVG');
-    }
+		if (!iconResponse.ok) {
+			throw error(500, 'Error fetching icon');
+		}
 
-    let svg = await iconResponse.text();
+		if (iconResponse.headers.get('content-type') !== 'image/svg+xml') {
+			throw error(500, 'Resource not SVG');
+		}
 
-    if (hasSvgParam(searchParams)) {
-      const attributes = pullAttributes(query);
-      svg = generateSvg(svg, attributes);
-    }
+		let svg = await iconResponse.text();
 
-    return new Response(svg, {
-      status: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Cache-Control':
-          's-maxage=2592000, max-age=604800, stale-while-revalidate=604800, immutable',
-        'Content-Type': 'image/svg+xml; charset=utf-8',
-      },
-    });
-  };
+		if (hasSvgParam(searchParams)) {
+			const attributes = pullAttributes(query);
+			svg = generateSvg(svg, attributes);
+		}
+
+		return new Response(svg, {
+			status: 200,
+			headers: {
+				'Access-Control-Allow-Origin': '*',
+				'Cache-Control':
+					's-maxage=2592000, max-age=604800, stale-while-revalidate=604800, immutable',
+				'Content-Type': 'image/svg+xml; charset=utf-8',
+			},
+		});
+	};
 }
 
 function generateSvg(raw: string, attributes: Record<string, string>) {
-  const hast = parse(raw);
-  const node = hast.children[0] as ElementNode;
+	const hast = parse(raw);
+	const node = hast.children[0] as ElementNode;
 
-  const props = { ...node.properties };
-  const viewbox = node.properties?.viewBox as string;
-  const dimensions = deriveDimensions(viewbox, attributes);
+	const props = { ...node.properties };
+	const viewbox = node.properties?.viewBox as string;
+	const dimensions = deriveDimensions(viewbox, attributes);
 
-  attributes.height = (dimensions.height ?? props.height).toString();
-  attributes.width = (dimensions.width ?? props.width).toString();
+	attributes.height = (dimensions.height ?? props.height).toString();
+	attributes.width = (dimensions.width ?? props.width).toString();
 
-  Object.entries(attributes).forEach(([key, value]) => {
-    if (value === '') delete props[key];
-    else props[key] = value;
-  });
+	Object.entries(attributes).forEach(([key, value]) => {
+		if (value === '') delete props[key];
+		else props[key] = value;
+	});
 
-  delete props.class;
-  node.properties = props;
+	delete props.class;
+	node.properties = props;
 
-  return hastUtilToHtml(hast);
+	return toHtml(hast as unknown as RootContent);
 }
 
 function pullAttributes(object: Record<string, string>) {
-  const attrs: Record<string, string> = {};
+	const attrs: Record<string, string> = {};
 
-  for (const key of svgAttributes) {
-    if (object[key] != undefined) {
-      attrs[key] = object[key];
-    }
-  }
+	for (const key of svgAttributes) {
+		if (object[key] != undefined) {
+			attrs[key] = object[key];
+		}
+	}
 
-  return attrs;
+	return attrs;
 }
 
-function deriveDimensions(
-  viewbox: string,
-  { height, width }: Record<string, string>
-) {
-  const parts = viewbox.split(/(?:\s*,?\s+|,)/);
-  const viewboxW = parseInt(parts[2], 10);
-  const viewboxH = parseInt(parts[3], 10);
-  const w = parseInt(width, 10);
-  const h = parseInt(height, 10);
+function deriveDimensions(viewbox: string, { height, width }: Record<string, string>) {
+	const parts = viewbox.split(/(?:\s*,?\s+|,)/);
+	const viewboxW = parseInt(parts[2], 10);
+	const viewboxH = parseInt(parts[3], 10);
+	const w = parseInt(width, 10);
+	const h = parseInt(height, 10);
 
-  if (isNaN(viewboxW) || isNaN(viewboxH)) {
-    return { height, width };
-  }
+	if (isNaN(viewboxW) || isNaN(viewboxH)) {
+		return { height, width };
+	}
 
-  if (!isNaN(w) && nullish(height)) {
-    return {
-      height: (w / viewboxW) * viewboxH,
-      width: w,
-    };
-  }
+	if (!isNaN(w) && nullish(height)) {
+		return {
+			height: (w / viewboxW) * viewboxH,
+			width: w,
+		};
+	}
 
-  if (!isNaN(h) && nullish(width)) {
-    return {
-      height: h,
-      width: (h / viewboxH) * viewboxW,
-    };
-  }
+	if (!isNaN(h) && nullish(width)) {
+		return {
+			height: h,
+			width: (h / viewboxH) * viewboxW,
+		};
+	}
 
-  return { height, width };
+	return { height, width };
 }
 
 function hasSvgParam(params: URLSearchParams) {
-  return svgAttributes.some((attr) => params.has(attr));
+	return svgAttributes.some((attr) => params.has(attr));
 }
