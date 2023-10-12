@@ -18,12 +18,12 @@
 		"prettier"
 	],
 	"settings": {
+		"alias": {
+			"map": [["@", "./src"]],
+			"extensions": [".js", ".css", ".svg", ".ts", ".tsx"]
+		},
 		"import/resolver": {
-			"typescript": true,
-			"alias": {
-				"map": [["@", "./src"]],
-				"extensions": [".js", ".css", ".svg", ".ts", ".tsx"]
-			}
+			"typescript": true
 		}
 	},
 	"rules": {
