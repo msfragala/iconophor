@@ -1,7 +1,6 @@
 import { error, type RequestHandler } from '@sveltejs/kit';
 import { toHtml } from 'hast-util-to-html';
 import type { RootContent } from 'hast-util-to-html/lib';
-import fetch from 'node-fetch';
 import { type ElementNode, parse } from 'svg-parser';
 import { svgAttributes } from '@/lib/svg-attributes';
 
