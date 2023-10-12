@@ -1,5 +1,7 @@
 <script lang="ts">
-	let version = '4.28.0';
+	import debounce from 'lodash.debounce';
+
+	let version = '4.29.1';
 	let icon = 'activity';
 	let params = new URLSearchParams('stroke=pink&height=96');
 
@@ -13,6 +15,10 @@
 		if (s) path += `?${s}`;
 		return path;
 	}
+
+	const setIcon = debounce((value: string) => (icon = value), 500);
+	const setVersion = debounce((value: string) => (version = value), 500);
+	const setParams = debounce((value: URLSearchParams) => (params = value), 500);
 </script>
 
 <form class="grid gap-36">
@@ -23,7 +29,7 @@
 				<input
 					class="input w-full md:w-auto"
 					value={version}
-					on:input={(event) => (version = event.currentTarget.value)}
+					on:input={(event) => setVersion(event.currentTarget.value)}
 					id="playground-version"
 					name="version"
 				/>
@@ -35,7 +41,7 @@
 					value={icon}
 					id="playground-icon"
 					name="icon"
-					on:input={(event) => (icon = event.currentTarget.value)}
+					on:input={(event) => setIcon(event.currentTarget.value)}
 				/>
 			</div>
 		</div>
@@ -46,7 +52,7 @@
 			<input
 				class="input w-full"
 				value={`?${params.toString()}`}
-				on:input={(event) => (params = new URLSearchParams(event.currentTarget.value))}
+				on:input={(event) => setParams(new URLSearchParams(event.currentTarget.value))}
 				name="playground-params"
 			/>
 		</div>
