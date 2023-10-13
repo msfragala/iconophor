@@ -33,7 +33,7 @@ export const Heroicons = {
 export const SanityIcons = {
 	name: '@sanity/icons',
 	urlPattern: 'iconophor.com/icons/sanity-icons/:version/:icon',
-	github: 'https://github.com/sanity-io/design',
+	github: 'https://github.com/sanity-io/icons',
 	homepage: 'https://www.sanity.io/ui',
 	unpkg: 'https://unpkg.com/browse/@sanity/icons/',
 };
