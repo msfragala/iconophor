@@ -4,13 +4,15 @@ import { allParams, attributeParams } from '@/lib/parameters';
 import { transformXml, type XastNode } from '@/lib/transform';
 
 const noop = () => {};
+const month = 2678400;
+const year = 31536000;
 
 export function iconHandler<T extends string>(
 	paramNames: T[],
 	fn: (params: Partial<Record<T, string>>) => string | undefined
 ): RequestHandler {
 	return async ({ request, params }): Promise<Response> => {
-		const searchParams = new URL(request.url).searchParams;
+		const { pathname, searchParams } = new URL(request.url);
 
 		paramNames.forEach((param) => {
 			if (!params[param]) {
@@ -49,16 +51,17 @@ export function iconHandler<T extends string>(
 			]);
 		}
 
-		const hash = await createHash(svg);
+		const hash = await createHash(svg + pathname + searchParams);
 
 		return new Response(svg, {
 			status: 200,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
 				'ETag': `"${hash}"`,
-				'Cache-Control':
-					's-maxage=2592000, max-age=604800, stale-while-revalidate=604800, immutable',
+				'Cache-Control': `public, s-maxage=${year}, max-age=${month}`,
+				'Vercel-CDN-Cache-Control': `max-age=${year}`,
 				'Content-Type': 'image/svg+xml; charset=utf-8',
+				'X-Content-Type-Options': 'nosniff',
 			},
 		});
 	};
