@@ -1,6 +1,7 @@
 import { error, type RequestHandler } from '@sveltejs/kit';
-import { transformXml, type XastNode } from './transform';
+import { createHash } from '@/lib/crypto';
 import { allParams, attributeParams } from '@/lib/parameters';
+import { transformXml, type XastNode } from '@/lib/transform';
 
 const noop = () => {};
 
@@ -48,10 +49,13 @@ export function iconHandler<T extends string>(
 			]);
 		}
 
+		const hash = await createHash(svg);
+
 		return new Response(svg, {
 			status: 200,
 			headers: {
 				'Access-Control-Allow-Origin': '*',
+				'ETag': `"${hash}"`,
 				'Cache-Control':
 					's-maxage=2592000, max-age=604800, stale-while-revalidate=604800, immutable',
 				'Content-Type': 'image/svg+xml; charset=utf-8',
