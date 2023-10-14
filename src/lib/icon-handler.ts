@@ -47,7 +47,7 @@ export function iconHandler<T extends string>(
 				convertToSymbol(searchParams),
 			]);
 		}
-		console.log(Object.fromEntries(searchParams));
+
 		return new Response(svg, {
 			status: 200,
 			headers: {
@@ -141,7 +141,6 @@ function convertToSymbol(params: URLSearchParams) {
 	return (node: XastNode) => {
 		if (node.type !== 'element') return;
 		if (node.name !== 'svg') return;
-		console.log(node);
 		const children = node.children;
 		node.children = [
 			{
