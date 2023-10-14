@@ -58,9 +58,13 @@
 		</div>
 	</div>
 	<output class="space-y-8">
-		<p class="text-sm text-text-soft">
+		<a
+			class="text-sm text-text-soft hover:underline underline-offset-2"
+			href={path}
+			target="_blank"
+		>
 			<code class="break-words">{path}</code>
-		</p>
+		</a>
 		<div class="border rounded p-24 min-h-[144px]">
 			<img alt="" class="w-content" src={path} />
 		</div>
