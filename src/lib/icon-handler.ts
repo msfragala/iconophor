@@ -44,6 +44,7 @@ export function iconHandler<T extends string>(
 				replaceColors(searchParams),
 				overwriteAttributes(searchParams),
 				autofillDimensions(searchParams),
+				convertToSymbol(searchParams),
 			]);
 		}
 
@@ -69,11 +70,13 @@ function replaceColors(searchParams: URLSearchParams) {
 		const stroke = node.attributes.stroke;
 
 		if (fill && fill !== 'none') {
-			node.attributes.fill = color;
+			if (!color) delete node.attributes['fille'];
+			else node.attributes.fill = color;
 		}
 
 		if (stroke && stroke !== 'none') {
-			node.attributes.stroke = color;
+			if (!color) delete node.attributes['stroke'];
+			else node.attributes.stroke = color;
 		}
 	};
 }
@@ -86,7 +89,8 @@ function overwriteAttributes(params: URLSearchParams) {
 		attributeParams.forEach((attribute) => {
 			if (!params.has(attribute)) return;
 			const value = params.get(attribute)!;
-			node.attributes[attribute] = value;
+			if (!value) delete node.attributes[attribute];
+			else node.attributes[attribute] = value;
 		});
 	};
 }
@@ -130,4 +134,26 @@ function getAspectRatio(viewBox: string) {
 	const width = parseInt(w, 10);
 	const height = parseInt(h, 10);
 	return width / height;
+}
+
+function convertToSymbol(params: URLSearchParams) {
+	if (params.get('symbol') !== 'true') return noop;
+	return (node: XastNode) => {
+		if (node.type !== 'element') return;
+		if (node.name !== 'svg') return;
+		const children = node.children;
+		node.children = [
+			{
+				children,
+				type: 'element',
+				name: 'symbol',
+				attributes: {
+					id: 'icon',
+					viewBox: node.attributes.viewBox,
+					fill: node.attributes.fill,
+					stroke: node.attributes.stroke,
+				},
+			},
+		];
+	};
 }

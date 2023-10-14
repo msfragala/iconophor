@@ -77,13 +77,13 @@
 			{/each}
 		</ul>
 	</section>
-	<section>
+	<section id="query-parameters">
 		<h2 class="heading-lg mb-24">Query parameters</h2>
 		<ul class="space-y-12 sm:columns-2 sm:space-y-16">
 			{#each attributeParams as name}
 				<li>
 					<a
-						class="pill underline underline-offset-2"
+						class="pill underline-offset-2 hover:underline"
 						href={`https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/${name}`}
 					>
 						<code>?{name}</code>
@@ -91,19 +91,37 @@
 				</li>
 			{/each}
 		</ul>
-	</section>
-	<section>
-		<h2 class="heading-lg mb-24">Special parameters</h2>
-		<ul class="flex flex-col gap-y-36">
-			<li>
-				<h3 class="pill"><code>?replaceColors</code></h3>
-				<p class="mt-12 max-w-[70ch]">
-					Replace all <code>fill</code> and <code>stroke</code> attributes that contain a color with
-					a different value. This ignores attributes whose value is <code>none</code>. Use with
-					caution as SVGs that contain more than one color may break in appearance. Can be used to
-					set all colors to <code>currentColor</code> for example.
-				</p>
-			</li>
-		</ul>
+		<div id="special-query-parameters" class="mt-60">
+			<h3 class="heading-lg font-black mb-24">Special query parameters</h3>
+			<ul class="flex flex-col gap-y-36">
+				<li>
+					<section id="replaceColors-parameter">
+						<h3 class="pill"><code>?replaceColors</code></h3>
+						<p class="mt-12 max-w-[70ch]">
+							Replace all <code>fill</code> and <code>stroke</code> attributes with a different
+							value. This ignores attributes whose value is <code>none</code>. Can be used for
+							example to set all colors to <code>currentColor</code>. Conversely, can also be used
+							to remove all stroke and fill values by leaving the query parameter empty.
+						</p>
+						<p class="bg-yellow-900 rounded text-yellow-100 px-16 py-8 mt-16 w-content text-sm">
+							⚠️ May not work well with SVGs that contain multiple stroke or fill colors
+						</p>
+					</section>
+				</li>
+				<li>
+					<section id="symbol-parameter">
+						<h3 class="pill"><code>?symbol=true</code></h3>
+						<p class="mt-12 max-w-[70ch]">
+							Turn a plain SVG into a <a
+								class="link"
+								href="https://css-tricks.com/svg-use-with-external-reference-take-2">symbol</a
+							>, wrapping the root element's children in a
+							<code>&lt;symbol&gt;</code> element with <code>id="icon"</code>. This enables loading
+							SVG as external symbols.
+						</p>
+					</section>
+				</li>
+			</ul>
+		</div>
 	</section>
 </div>
