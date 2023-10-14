@@ -1,4 +1,4 @@
-export const svgAttributes = [
+export const attributeParams = [
 	'fill',
 	'stroke',
 	'width',
@@ -14,3 +14,5 @@ export const svgAttributes = [
 	'stroke-opacity',
 	'stroke-width',
 ] as const;
+
+export const allParams = [...attributeParams, 'replaceColors'];

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Playground from '@/components/Playground.svelte';
 	import { libraries } from '@/lib/libraries';
-	import { svgAttributes } from '@/lib/svg-attributes';
+	import { attributeParams } from '@/lib/parameters';
 
 	const title = 'Iconophor';
 	const description = 'An open-source CDN for popular SVG icon libraries.';
@@ -80,16 +80,30 @@
 	<section>
 		<h2 class="heading-lg mb-24">Query parameters</h2>
 		<ul class="space-y-12 sm:columns-2 sm:space-y-16">
-			{#each svgAttributes as name}
+			{#each attributeParams as name}
 				<li>
 					<a
-						class="pill"
+						class="pill underline underline-offset-2"
 						href={`https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/${name}`}
 					>
 						<code>?{name}</code>
 					</a>
 				</li>
 			{/each}
+		</ul>
+	</section>
+	<section>
+		<h2 class="heading-lg mb-24">Special parameters</h2>
+		<ul class="flex flex-col gap-y-36">
+			<li>
+				<h3 class="pill"><code>?replaceColors</code></h3>
+				<p class="mt-12 max-w-[70ch]">
+					Replace all <code>fill</code> and <code>stroke</code> attributes that contain a color with
+					a different value. This ignores attributes whose value is <code>none</code>. Use with
+					caution as SVGs that contain more than one color may break in appearance. Can be used to
+					set all colors to <code>currentColor</code> for example.
+				</p>
+			</li>
 		</ul>
 	</section>
 </div>

@@ -1,10 +1,8 @@
 import { error, type RequestHandler } from '@sveltejs/kit';
-import { toHtml } from 'hast-util-to-html';
-import type { RootContent } from 'hast-util-to-html/lib';
-import { type ElementNode, parse } from 'svg-parser';
-import { svgAttributes } from '@/lib/svg-attributes';
+import { transformXml, type XastNode } from './transform';
+import { allParams, attributeParams } from '@/lib/parameters';
 
-const nullish = (x: unknown) => x == undefined || x != x;
+const noop = () => {};
 
 export function iconHandler<T extends string>(
 	paramNames: T[],
@@ -12,7 +10,6 @@ export function iconHandler<T extends string>(
 ): RequestHandler {
 	return async ({ request, params }): Promise<Response> => {
 		const searchParams = new URL(request.url).searchParams;
-		const query = Object.fromEntries(searchParams);
 
 		paramNames.forEach((param) => {
 			if (!params[param]) {
@@ -42,9 +39,12 @@ export function iconHandler<T extends string>(
 
 		let svg = await iconResponse.text();
 
-		if (hasSvgParam(searchParams)) {
-			const attributes = pullAttributes(query);
-			svg = generateSvg(svg, attributes);
+		if (allParams.some((p) => searchParams.has(p))) {
+			svg = transformXml(svg, [
+				replaceColors(searchParams),
+				overwriteAttributes(searchParams),
+				autofillDimensions(searchParams),
+			]);
 		}
 
 		return new Response(svg, {
@@ -59,68 +59,75 @@ export function iconHandler<T extends string>(
 	};
 }
 
-function generateSvg(raw: string, attributes: Record<string, string>) {
-	const hast = parse(raw);
-	const node = hast.children[0] as ElementNode;
+function replaceColors(searchParams: URLSearchParams) {
+	if (!searchParams.has('replaceColors')) return noop;
+	const color = searchParams.get('replaceColors')!;
+	return (node: XastNode) => {
+		if (node.type !== 'element') return;
 
-	const props = { ...node.properties };
-	const viewbox = node.properties?.viewBox as string;
-	const dimensions = deriveDimensions(viewbox, attributes);
+		const fill = node.attributes.fill;
+		const stroke = node.attributes.stroke;
 
-	attributes.height = (dimensions.height ?? props.height).toString();
-	attributes.width = (dimensions.width ?? props.width).toString();
-
-	Object.entries(attributes).forEach(([key, value]) => {
-		if (value === '') delete props[key];
-		else props[key] = value;
-	});
-
-	delete props.class;
-	node.properties = props;
-
-	return toHtml(hast as unknown as RootContent);
-}
-
-function pullAttributes(object: Record<string, string>) {
-	const attrs: Record<string, string> = {};
-
-	for (const key of svgAttributes) {
-		if (object[key] != undefined) {
-			attrs[key] = object[key];
+		if (fill && fill !== 'none') {
+			node.attributes.fill = color;
 		}
-	}
 
-	return attrs;
+		if (stroke && stroke !== 'none') {
+			node.attributes.stroke = color;
+		}
+	};
 }
 
-function deriveDimensions(viewbox: string, { height, width }: Record<string, string>) {
-	const parts = viewbox.split(/(?:\s*,?\s+|,)/);
-	const viewboxW = parseInt(parts[2], 10);
-	const viewboxH = parseInt(parts[3], 10);
-	const w = parseInt(width, 10);
-	const h = parseInt(height, 10);
-
-	if (isNaN(viewboxW) || isNaN(viewboxH)) {
-		return { height, width };
-	}
-
-	if (!isNaN(w) && nullish(height)) {
-		return {
-			height: (w / viewboxW) * viewboxH,
-			width: w,
-		};
-	}
-
-	if (!isNaN(h) && nullish(width)) {
-		return {
-			height: h,
-			width: (h / viewboxH) * viewboxW,
-		};
-	}
-
-	return { height, width };
+function overwriteAttributes(params: URLSearchParams) {
+	if (!attributeParams.some((a) => params.has(a))) return noop;
+	return (node: XastNode) => {
+		if (node.type !== 'element') return;
+		if (node.name !== 'svg') return;
+		attributeParams.forEach((attribute) => {
+			if (!params.has(attribute)) return;
+			const value = params.get(attribute)!;
+			node.attributes[attribute] = value;
+		});
+	};
 }
 
-function hasSvgParam(params: URLSearchParams) {
-	return svgAttributes.some((attr) => params.has(attr));
+function autofillDimensions(params: URLSearchParams) {
+	if (params.has('width') && params.has('height')) return noop;
+	let width: number;
+	let height: number;
+
+	if (params.has('width')) {
+		width = parseInt(params.get('width')!, 10);
+		if (isNaN(width)) return noop;
+	}
+
+	if (params.has('height')) {
+		height = parseInt(params.get('height')!, 10);
+		if (isNaN(height)) return noop;
+	}
+
+	return (node: XastNode) => {
+		if (node.type !== 'element') return;
+		if (node.name !== 'svg') return;
+		if (!node.attributes.viewBox) return;
+
+		const ratio = getAspectRatio(node.attributes.viewBox);
+
+		if (isNaN(ratio)) return;
+
+		if (params.has('width')) {
+			node.attributes.height = String(width / ratio);
+		}
+
+		if (params.has('height')) {
+			node.attributes.width = String(height / ratio);
+		}
+	};
+}
+
+function getAspectRatio(viewBox: string) {
+	const [, , w, h] = viewBox.trim().split(/(?:\s*,?\s+|,)/);
+	const width = parseInt(w, 10);
+	const height = parseInt(h, 10);
+	return width / height;
 }

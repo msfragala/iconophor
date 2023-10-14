@@ -17,9 +17,15 @@ dependencies:
   node-fetch:
     specifier: ^3.3.2
     version: 3.3.2
-  svg-parser:
-    specifier: ^2.0.4
-    version: 2.0.4
+  unist-util-visit:
+    specifier: ^5.0.0
+    version: 5.0.0
+  xast-util-from-xml:
+    specifier: ^4.0.0
+    version: 4.0.0
+  xast-util-to-xml:
+    specifier: ^4.0.0
+    version: 4.0.0
 
 devDependencies:
   '@sveltejs/adapter-auto':
@@ -37,6 +43,9 @@ devDependencies:
   '@types/svg-parser':
     specifier: ^2.0.4
     version: 2.0.4
+  '@types/xast':
+    specifier: ^2.0.1
+    version: 2.0.1
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.0.0
     version: 6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2)
@@ -451,6 +460,11 @@ packages:
     resolution: {integrity: sha512-C16M+IYz0rgRhWZdCmK+h58JMv8vijAA61gmz2rspCSwKwzBebpdcsiUmwrtJRdphuY30i6BSLEOP8ppbNLyLg==}
     dev: true
 
+  /@rgrove/parse-xml@4.1.0:
+    resolution: {integrity: sha512-pBiltENdy8SfI0AeR1e5TRpS9/9Gl0eiOEt6ful2jQfzsgvZYWqsKiBWaOCLdocQuk0wS7KOHI37n0C1pnKqTw==}
+    engines: {node: '>=14.0.0'}
+    dev: false
+
   /@rollup/pluginutils@4.2.1:
     resolution: {integrity: sha512-iKnFXr7NkdZAIHiIWE+BX5ULi/ucVFYWD6TbAV+rZctiRTY2PL6tsIKhoIOaoskiWAkgu+VsbXgUVDNLHf+InQ==}
     engines: {node: '>= 8.0.0'}
@@ -597,7 +611,11 @@ packages:
 
   /@types/unist@3.0.0:
     resolution: {integrity: sha512-MFETx3tbTjE7Uk6vvnWINA/1iJ7LuMdO4fcq8UfF0pRbj01aGLduVvQcRyswuACJdpnHgg8E3rQLhaRdNEJS0w==}
-    dev: false
+
+  /@types/xast@2.0.1:
+    resolution: {integrity: sha512-sHwTZHzH0LSdl2+f9aM4noje2j4grXaL+Dp1hM85ULdWylFHMxq7b9ItZ/1n8TwxkQRLIYJuqZGdeYEFEPVvVg==}
+    dependencies:
+      '@types/unist': 3.0.0
 
   /@typescript-eslint/eslint-plugin@6.7.5(@typescript-eslint/parser@6.7.5)(eslint@8.51.0)(typescript@5.2.2):
     resolution: {integrity: sha512-JhtAwTRhOUcP96D0Y6KYnwig/MRQbOoLGXTON2+LlyB/N35SP9j1boai2zzwXb7ypKELXMx3DVk9UTaEq1vHEw==}
@@ -3691,10 +3709,6 @@ packages:
       periscopic: 3.1.0
     dev: true
 
-  /svg-parser@2.0.4:
-    resolution: {integrity: sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==}
-    dev: false
-
   /tailwindcss@3.3.3:
     resolution: {integrity: sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w==}
     engines: {node: '>=14.0.0'}
@@ -4110,6 +4124,23 @@ packages:
   /wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
+
+  /xast-util-from-xml@4.0.0:
+    resolution: {integrity: sha512-Pwj6Bw5XARduMeTWpeEfmfgT8/Ma3oiMI4bBIRzCd7GH26A/dn3x7jDc2BHBCQxxdQniTh0MjVUYbjaj4Ljb+Q==}
+    dependencies:
+      '@rgrove/parse-xml': 4.1.0
+      '@types/xast': 2.0.1
+      vfile-location: 5.0.2
+      vfile-message: 4.0.2
+    dev: false
+
+  /xast-util-to-xml@4.0.0:
+    resolution: {integrity: sha512-r1euIWS5yZJUNpfN+ReE4m7Vld2iytaOPJtuXVuRQacRZwqRN1MAb+dv0aGLrdXOZrpGLyvUFf1Upyrb3R5qBg==}
+    dependencies:
+      '@types/xast': 2.0.1
+      ccount: 2.0.1
+      stringify-entities: 4.0.3
+    dev: false
 
   /yallist@4.0.0:
     resolution: {integrity: sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==}

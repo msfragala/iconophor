@@ -54,6 +54,16 @@
 	textarea:focus-visible {
 		--focus-ring-offset: 0;
 	}
+
+	p code:not([class]) {
+		font-family: theme('fontFamily.mono');
+		display: inline-block;
+		background-color: theme('colors.background-soft');
+		color: theme('colors.white');
+		padding-inline: 0.5em;
+		font-size: 0.9em;
+		border-radius: theme('borderRadius.DEFAULT');
+	}
 }
 
 .heading-xl {
