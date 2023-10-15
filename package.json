@@ -6,7 +6,7 @@
 	"author": "Mitchell Fragala <ms.fragala@gmail.com>",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --port 4000",
 		"build": "vite build",
 		"preview": "vite preview",
 		"lint": "eslint .",
