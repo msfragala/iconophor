@@ -42,6 +42,7 @@ export async function GET(event) {
 
 	return new Response(JSON.stringify(names), {
 		headers: {
+			'Access-Control-Allow-Origin': origin,
 			'Cache-Control': `public, s-maxage=${week}, max-age=${day}`,
 			'Content-Type': 'application/json; charset=utf-8',
 			'X-Content-Type-Options': 'nosniff',

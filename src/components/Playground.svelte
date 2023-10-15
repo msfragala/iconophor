@@ -10,7 +10,7 @@
 	let version = initialOption.version;
 	let style = initialOption.styles[0];
 	let icon = 'academic-cap';
-	let params = new URLSearchParams('replace-colors=pink&height=96');
+	let params = new URLSearchParams('height=96&stroke=pink');
 
 	let styleOptions: string[] = initialOption.styles;
 	let iconOptions: string[] = [];
@@ -26,6 +26,35 @@
 		library = option.key;
 		version = option.version;
 		icon = '';
+
+		const newParams = new URLSearchParams(params);
+		let color = params.get('fill');
+		color ??= params.get('stroke');
+		color ??= params.get('replace-colors');
+		color ??= 'pink';
+
+		switch (option.key) {
+			case 'feather':
+			case 'heroicons':
+			case 'material':
+				newParams.delete('replace-colors');
+				newParams.delete('fill');
+				newParams.set('stroke', color);
+				break;
+			case 'fontawesome':
+				newParams.delete('replace-colors');
+				newParams.delete('stroke');
+				newParams.set('fill', color);
+				break;
+			case 'sanity-icons':
+				newParams.delete('fill');
+				newParams.delete('stroke');
+				newParams.set('replace-colors', color);
+				break;
+		}
+
+		params = newParams;
+
 		if (option.styles.length) {
 			styleOptions = option.styles;
 			style = option.styles[0];
@@ -39,7 +68,7 @@
 
 	$: {
 		if (browser) {
-			fetch(`/api/icon-names?library=${library}&style=outline`)
+			fetch(`/api/icon-names?library=${library}&style=${style}`)
 				.then((res) => res.json())
 				.then((names) => {
 					iconOptions = names;
@@ -66,8 +95,8 @@
 					</select>
 				</div>
 				<div
-					class:opacity-0={!styleOptions.length}
-					class="transition-opacity transit scale-95 duration-[200ms]"
+					data-disabled={!styleOptions.length}
+					class="transition-opacity transit duration-300 max-md:data-[disabled=true]:hidden md:data-[disabled=true]:opacity-0"
 				>
 					<label class="block text-sm text-text-soft mb-4" for="playground-version">Style</label>
 					<select
@@ -85,7 +114,7 @@
 			<div>
 				<label class="block text-sm text-text-soft mb-4" for="playground-icon"> Icon name </label>
 				<select
-					class="input w-full"
+					class="input w-full md:w-[calc(50%-12px)]"
 					value={icon}
 					id="playground-icon"
 					name="icon"
@@ -107,7 +136,7 @@
 			</label>
 			<input
 				class="input w-full"
-				value={`?${params.toString()}`}
+				value={decodeURIComponent(`?${params.toString()}`)}
 				on:input={(event) => setParams(new URLSearchParams(event.currentTarget.value))}
 				name="playground-params"
 			/>
@@ -119,7 +148,7 @@
 			href={path}
 			target="_blank"
 		>
-			<code class="break-words">{path ?? 'Choose an icon'}</code>
+			<code class="break-words">{path ? decodeURI(path) : 'Choose an icon'}</code>
 		</a>
 		<div class="border rounded p-24 min-h-[144px]">
 			<img alt="" class="h-[96px]" src={path} />
