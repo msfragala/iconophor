@@ -37,7 +37,6 @@
 	</section>
 	<section>
 		<h2 class="heading-lg mb-24">Playground</h2>
-		<p class="mb-24">Try out the API in this demo with Feather Icons:</p>
 		<Playground />
 	</section>
 	<section>
@@ -49,6 +48,7 @@
 						<a
 							class="heading-md text-pink-300 hover:underline focus-visible:underline"
 							href={library.homepage}
+							target="_blank"
 						>
 							{library.name}
 						</a>
@@ -58,6 +58,7 @@
 							aria-label={`${library.name} on GitHub`}
 							class="text-sm hover:underline focus-visible:underline"
 							href={library.github}
+							target="_blank"
 						>
 							GitHub
 						</a>{' '}
@@ -66,6 +67,7 @@
 							aria-label={`${library.name} on Unpkg`}
 							class="text-sm hover:underline focus-visible:underline"
 							href={library.unpkg}
+							target="_blank"
 						>
 							Unpkg
 						</a>
@@ -95,8 +97,8 @@
 			<h3 class="heading-lg font-black mb-24">Special query parameters</h3>
 			<ul class="flex flex-col gap-y-36">
 				<li>
-					<section id="replaceColors-parameter">
-						<h3 class="pill"><code>?replaceColors</code></h3>
+					<section id="replace-colors-parameter">
+						<h3 class="pill"><code>?replace-colors</code></h3>
 						<p class="mt-12 max-w-[70ch]">
 							Replace all <code>fill</code> and <code>stroke</code> attributes with a different
 							value. This ignores attributes whose value is <code>none</code>. Can be used for
