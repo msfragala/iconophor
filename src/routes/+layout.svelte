@@ -6,8 +6,8 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width" />
 	<meta content="https://www.iconophor.com" property="og:url" />
-	<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
-	<link href="/favicon.svg" rel="mask-icon" type="image/svg+xml" />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="mask-icon" href="/favicon.svg" type="image/svg+xml" />
 </svelte:head>
 
 <main class="constrain-x mt-72 md:mt-144">

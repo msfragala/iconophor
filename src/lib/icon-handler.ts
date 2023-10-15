@@ -1,11 +1,10 @@
 import { error, type RequestHandler } from '@sveltejs/kit';
+import { month, year } from './time';
 import { createHash } from '@/lib/crypto';
 import { allParams, attributeParams } from '@/lib/parameters';
 import { transformXml, type XastNode } from '@/lib/transform';
 
 const noop = () => {};
-const month = 2678400;
-const year = 31536000;
 
 export function iconHandler<T extends string>(
 	paramNames: T[],
@@ -68,8 +67,8 @@ export function iconHandler<T extends string>(
 }
 
 function replaceColors(searchParams: URLSearchParams) {
-	if (!searchParams.has('replaceColors')) return noop;
-	const color = searchParams.get('replaceColors')!;
+	if (!searchParams.has('replace-colors')) return noop;
+	const color = searchParams.get('replace-colors')!;
 	return (node: XastNode) => {
 		if (node.type !== 'element') return;
 

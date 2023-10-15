@@ -9,4 +9,9 @@ declare global {
 	}
 }
 
+declare module '$env/static/private' {
+	export const VERCEL_ENV: 'production' | 'preview' | 'development' | undefined;
+	export const VERCEL_URL: string | undefined;
+}
+
 export {};

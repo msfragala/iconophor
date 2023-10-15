@@ -92,6 +92,14 @@
 
 .input {
 	@apply bg-background-soft rounded px-12 py-8;
+
+	&:is(select) {
+		appearance: none;
+		background-image: url('/icons/heroicons/2.0.18/outline/chevron-up-down?stroke=white');
+		background-repeat: no-repeat;
+		background-size: auto 1.2em;
+		background-position: right 4px center;
+	}
 }
 
 .link {
