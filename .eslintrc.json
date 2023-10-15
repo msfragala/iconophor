@@ -32,6 +32,24 @@
 		"import/first": "error",
 		"import/newline-after-import": "error",
 		"import/no-duplicates": "error",
+		"import/no-unresolved": [
+			"error",
+			{
+				"ignore": [
+					"\\$app/environment",
+					"\\$app/forms",
+					"\\$app/navigation",
+					"\\$app/paths",
+					"\\$app/stores",
+					"\\$env/dynamic/private",
+					"\\$env/dynamic/public",
+					"\\$env/static/private",
+					"\\$env/static/public",
+					"\\$lib",
+					"\\$service-worker"
+				]
+			}
+		],
 		"import/order": [
 			"error",
 			{
