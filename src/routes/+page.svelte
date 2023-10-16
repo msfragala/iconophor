@@ -39,7 +39,7 @@
 		<h2 class="heading-lg mb-24">Playground</h2>
 		<Playground />
 	</section>
-	<section>
+	<section id="icon-libraries">
 		<h2 class="heading-lg mb-24">Icon libraries</h2>
 		<ul class="grid grid-cols-1 gap-y-36 w-full">
 			{#each libraries as library}
