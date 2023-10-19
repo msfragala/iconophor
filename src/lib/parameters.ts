@@ -15,4 +15,4 @@ export const attributeParams = [
 	'stroke-width',
 ] as const;
 
-export const allParams = [...attributeParams, 'replaceColors'];
+export const allParams = [...attributeParams, 'replace-colors', 'symbol'];
