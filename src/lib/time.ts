@@ -1,3 +1,4 @@
+export const hour = 3600;
 export const day = 86400;
 export const week = 604800;
 export const month = 2678400;
