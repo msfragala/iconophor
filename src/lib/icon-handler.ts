@@ -3,7 +3,7 @@ import { createResponse } from './create-response';
 
 export function iconHandler<T extends string>(
 	paramNames: T[],
-	fn: (params: Partial<Record<T, string>>) => string | undefined
+	fn: (params: Partial<Record<T, string>>, request: Request) => string | undefined
 ): RequestHandler {
 	return async ({ request, params }): Promise<Response> => {
 		const { searchParams } = new URL(request.url);
@@ -14,7 +14,7 @@ export function iconHandler<T extends string>(
 			}
 		});
 
-		const url = fn(params);
+		const url = fn(params, request);
 
 		if (!url) {
 			throw error(404, 'Icon not found');
