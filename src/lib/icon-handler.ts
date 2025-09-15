@@ -20,7 +20,7 @@ export function iconHandler<T extends string>(
 			throw error(404, 'Icon not found');
 		}
 
-		console.info({ referer: request.headers.get('referer'), url: request.url });
+		console.warn({ referer: request.headers.get('referer'), url: request.url });
 
 		return createResponse(url, searchParams);
 	};
